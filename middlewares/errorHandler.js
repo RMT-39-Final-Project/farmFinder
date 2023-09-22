@@ -32,6 +32,9 @@ const errorHandler = (err, req, res, next) => {
   } else if (err.name === "farmer_banned") {
     status = 400;
     message = "Your account is banned";
+  } else if (error.name === "Bad request") {
+    status = 400;
+    message = "Description cannot be empty!";
   }
   res.status(status).json({ message: message });
 };

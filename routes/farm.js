@@ -2,24 +2,12 @@ const express = require("express");
 const FarmController = require("../controllers/farmsController");
 const farm = express.Router();
 
-farm.get('/',(req, res) => {
-  res.send('Hello World!')
-})
-farm.get('/:id',(req, res) => {
-  res.send('Hello World!')
-})
-farm.post('/',(req, res) => {
-  res.send('Hello World!')
-})
-farm.get('/my-farms',(req, res) => {
-  res.send('Hello World!')
-})
-farm.get('/my-farms/:id',(req, res) => {
-  res.send('Hello World!')
-})
-farm.delete('/my-farms/:id',(req, res) => {
-  res.send('Hello World!')
-})
+farm.get('/', FarmController.getAllFarms)
+farm.get('/my-farms', FarmController.getAllUserFarms);
+farm.post('/',FarmController.addFarm)
+farm.get('/:farmId',FarmController.getFarmById)
+farm.get('/my-farms/:farmId',FarmController.getUserFarmById) // ini kayaknya g butuh si pake /farms/:id aja tp just in case
+farm.delete('/my-farms/:farmId',)
 
 
 module.exports = farm;

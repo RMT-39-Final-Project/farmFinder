@@ -2,7 +2,6 @@
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Balance extends Model {
-
     static associate(models) {
       // this.belongsTo(models.User)
     }
@@ -12,11 +11,14 @@ module.exports = (sequelize, DataTypes) => {
       userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        validate: {
-          notEmpty: 'userId is required',
-          notNull: 'userId is required',
+        unique: {
+          args: true,
+          msg: 'userId must be unique',
         },
-        
+        validate: {
+          notEmpty: { msg: 'userId is required' },
+          notNull: { msg: 'userId is required' },
+        },
       },
       balance: { type: DataTypes.INTEGER },
       status: { type: DataTypes.STRING },

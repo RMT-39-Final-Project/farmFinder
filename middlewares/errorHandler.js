@@ -23,12 +23,6 @@ const errorHandler = (err, req, res, next) => {
   } else if (err.name === "InvalidFarmId") {
     status = 404;
     message = "Farm not found";
-  } else if (err.name === "not_found") {
-    status = 404;
-    message = "not found";
-  } else if (err.name === "farmer_not_found") {
-    status = 400;
-    message = `Farmer with id ${err.id} not found`;
   } else if (err.name === "farmer_banned") {
     status = 400;
     message = "Your account is banned";
@@ -41,12 +35,9 @@ const errorHandler = (err, req, res, next) => {
   } else if (err.name === "farmer_banned") {
     status = 400;
     message = "Your account is banned";
-  } else if (err.name = "report_not_found") {
+  } else if ((err.name = "report_not_found")) {
     status = 404;
     message = `report with id ${err.id} not found`;
-  } else if (err.name = 'not_found'){
-    status = 404;
-    message = 'not found';
   }
   res.status(status).json({ message: message });
 };

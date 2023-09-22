@@ -10,5 +10,6 @@ users.post("/investor/login", UserController.loginInvestor);
 users.get("/farmer/:id", UserController.findOneFarmer);
 users.post("/farmer/register", UserController.createFarmer);
 users.post("/farmer/login", UserController.loginFarmer);
+users.patch("/farmer/:id", UserController.editStatusFarmer);
 
 module.exports = users;

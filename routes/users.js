@@ -7,4 +7,8 @@ users.get("/investor/:id", UserController.findOneInvestor);
 users.post("/investor/register", UserController.createInvestor);
 users.post("/investor/login", UserController.loginInvestor);
 
+users.get("/farmer/:id", UserController.findOneFarmer);
+users.post("/farmer/register", UserController.createFarmer);
+users.post("/farmer/login", UserController.loginFarmer);
+
 module.exports = users;

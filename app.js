@@ -8,10 +8,12 @@ const cors = require("cors");
 const router = require("./routes");
 const errorHandler = require("./middlewares/errorHandler");
 const port = 3000;
+const morgan = require('morgan')
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
+app.use(morgan('dev'))
 
 app.use(router);
 app.use(errorHandler);

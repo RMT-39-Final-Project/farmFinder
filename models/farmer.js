@@ -56,18 +56,6 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      address: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notNull: {
-            msg: "Address is required",
-          },
-          notEmpty: {
-            msg: "Address is required",
-          },
-        },
-      },
       phoneNumber: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -88,7 +76,7 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Farmer",
       hooks: {
         beforeCreate(item) {
-          item.status = "verified";
+          item.status = "active";
           item.balance = 0;
           item.password = hash(item.password);
         },

@@ -9,7 +9,7 @@ const router = express.Router();
 router.use("/users", users);
 router.use("/farm", farm);
 router.use("/invest", invest);
-router.use("/balance", balance);
+router.use("/balances", balance);
 router.use("/report", report);
 
 module.exports = router;

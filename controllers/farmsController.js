@@ -26,7 +26,7 @@ class FarmController {
         });
       }
     } catch (err) {
-      next(err)
+      next(err);
     }
   }
 
@@ -76,7 +76,6 @@ class FarmController {
 
     try {
       await mainImgFile.mv(uploadPath);
-
       const uploadedMainImage = await imagekit.upload({
         file: fs.readFileSync(uploadPath),
         fileName: mainImgFile.name,
@@ -139,7 +138,6 @@ class FarmController {
       });
 
       await transaction.commit();
-
       res.status(201).json({ createdFarm });
     } catch (err) {
       console.log(err);
@@ -150,7 +148,6 @@ class FarmController {
       if (transaction) {
         await transaction.rollback();
       }
-
       if (
         err.name === "SequelizeValidationError" ||
         err.name === "SequelizeUniqueConstraintError"
@@ -208,7 +205,7 @@ class FarmController {
 
       res.status(200).json(farm);
     } catch (err) {
-     next(err)
+      next(err);
     }
   }
 
@@ -255,7 +252,7 @@ class FarmController {
         message: `Farm with id: ${farmId} status updated to ${status}`,
       });
     } catch (err) {
-      next(err)
+      next(err);
     }
   }
 }

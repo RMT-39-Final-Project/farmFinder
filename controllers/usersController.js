@@ -106,8 +106,6 @@ class UserController {
       res
         .status(200)
         .json({ message: `Farmer with id ${req.params.id} unactived` });
-      const access_token = token({ id: user.id });
-      res.status(200).json({ access_token });
     } catch (err) {
       next(err);
     }

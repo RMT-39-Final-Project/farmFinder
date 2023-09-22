@@ -29,6 +29,9 @@ const errorHandler = (err, req, res, next) => {
   } else if (err.name === "farmer_not_found") {
     status = 404;
     message = `Farmer with id ${err.id} not found`;
+  } else if (err.name === "farmer_banned") {
+    status = 400;
+    message = "Your account is banned";
   }
   res.status(status).json({ message: message });
 };

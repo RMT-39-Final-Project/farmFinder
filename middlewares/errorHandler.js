@@ -38,6 +38,9 @@ const errorHandler = (err, req, res, next) => {
   } else if ((err.name = "report_not_found")) {
     status = 404;
     message = `report with id ${err.id} not found`;
+  } else if (err.name === "farmer_not_found") {
+    status = 400;
+    message = `Farmer with id ${err.id} not found`;
   }
   res.status(status).json({ message: message });
 };

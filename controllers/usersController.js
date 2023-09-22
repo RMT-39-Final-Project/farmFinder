@@ -86,6 +86,7 @@ class UserController {
       if (!user) throw { name: "invalid_email/password" };
       const valid = compare(password, user.password);
       if (!valid) throw { name: "invalid_email/password" };
+
       if (user.status === "unactive") throw { name: "farmer_banned" };
       const access_token = token({ id: user.id });
       res.status(200).json({ access_token });
@@ -93,7 +94,6 @@ class UserController {
       next(err);
     }
   }
-
   static async editStatusFarmer(req, res, next) {
     try {
       const farmer = await Farmer.findByPk(req.params.id);

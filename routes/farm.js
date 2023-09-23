@@ -4,7 +4,6 @@ const authorizeDeleteFarm = require("../middlewares/authorization");
 const farm = express.Router();
 
 farm.get("/", FarmController.getAllFarms);
-
 farm.get("/my-farms/farm", FarmController.getAllUserFarms);
 farm.post("/my-farms/farm", FarmController.addFarm);
 farm.delete(

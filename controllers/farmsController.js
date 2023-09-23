@@ -252,7 +252,7 @@ class FarmController {
       }
 
       res.status(200).json({
-        message: `Farm status updated to ${status}`,
+        message: `Farm with id: ${farmId} status updated to ${status}`,
       });
     } catch (err) {
       next(err)

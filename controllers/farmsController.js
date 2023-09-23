@@ -26,13 +26,11 @@ class FarmController {
         });
       }
     } catch (err) {
-      res.status(500).json({
-        message: "Internal server error",
-      });
+      next(err)
     }
   }
 
-  static async getFarmById(req, res) {
+  static async getFarmById(req, res, next) {
     try {
       const { farmId } = req.params;
       const farm = await Farm.findOne({
@@ -49,9 +47,7 @@ class FarmController {
 
       res.status(200).json(farm);
     } catch (error) {
-      res.status(500).json({
-        message: "Internal server error",
-      });
+      next(error);
     }
   }
 
@@ -68,47 +64,53 @@ class FarmController {
       sharePercent,
       price,
     } = req.body;
-  
+
     if (!req.files || Object.keys(req.files).length === 0) {
       return res.status(400).json({ message: "No files were uploaded." });
     }
-  
-    const mainImgFile = req.files.photoUrl; 
+
+    const mainImgFile = req.files.photoUrl;
     const uploadPath = path.join(serverPath, mainImgFile.name);
 
     const transaction = await sequelize.transaction();
-  
+
     try {
       await mainImgFile.mv(uploadPath);
-  
+
       const uploadedMainImage = await imagekit.upload({
         file: fs.readFileSync(uploadPath),
         fileName: mainImgFile.name,
       });
-  
+
       const mainImgUrl = uploadedMainImage.url;
 
-      const createdFarm = await Farm.create({
-        name,
-        category,
-        city,
-        address,
-        mainImgUrl,
-        latitude,
-        longitude,
-        videoUrl,
-        benefits,
-        sharePercent,
-        price,
-        FarmerId: 1 //ganti jadi req.user.Id,
-      }, { transaction });
+      const createdFarm = await Farm.create(
+        {
+          name,
+          category,
+          city,
+          address,
+          mainImgUrl,
+          latitude,
+          longitude,
+          videoUrl,
+          benefits,
+          sharePercent,
+          price,
+          FarmerId: 1, //ganti jadi req.user.Id,
+        },
+        { transaction }
+      );
 
       const farmId = createdFarm.id;
       const additionalImages = req.files.additionalImages || [];
       const additionalImageRecords = [];
 
       for (const additionalImgFile of additionalImages) {
-        const additionalUploadPath = path.join(serverPath, additionalImgFile.name);
+        const additionalUploadPath = path.join(
+          serverPath,
+          additionalImgFile.name
+        );
 
         await additionalImgFile.mv(additionalUploadPath);
 
@@ -125,7 +127,8 @@ class FarmController {
         });
 
         fs.unlink(additionalUploadPath, (unlinkError) => {
-          if (unlinkError) console.error(`Unable to delete file: ${additionalUploadPath}`);
+          if (unlinkError)
+            console.error(`Unable to delete file: ${additionalUploadPath}`);
         });
       }
 
@@ -136,7 +139,7 @@ class FarmController {
       });
 
       await transaction.commit();
-  
+
       res.status(201).json({ createdFarm });
     } catch (err) {
       console.log(err);
@@ -147,7 +150,7 @@ class FarmController {
       if (transaction) {
         await transaction.rollback();
       }
-  
+
       if (
         err.name === "SequelizeValidationError" ||
         err.name === "SequelizeUniqueConstraintError"
@@ -167,7 +170,7 @@ class FarmController {
     try {
       const farms = await Farm.findAll({
         where: {
-          FarmerId : 1 //req.user.id,
+          FarmerId: 1, //req.user.id,
         },
         include: [
           {
@@ -184,10 +187,7 @@ class FarmController {
         });
       }
     } catch (err) {
-      console.log(err);
-      res.status(500).json({
-        message: err,
-      });
+      next(err);
     }
   }
 
@@ -207,10 +207,8 @@ class FarmController {
       if (!farm) throw { name: "InvalidFarmId" };
 
       res.status(200).json(farm);
-    } catch (error) {
-      res.status(500).json({
-        message: "Internal server error",
-      });
+    } catch (err) {
+     next(err)
     }
   }
 
@@ -218,7 +216,7 @@ class FarmController {
     const { farmId } = req.params;
     const foundOne = await Farm.findOne({ where: { id: farmId } });
     if (!foundOne) {
-      throw { name: "Farm Not Found" };
+      throw { name: "InvalidFarmId" };
     }
     const deleted = await Farm.destroy({ where: { id: farmId } });
     try {
@@ -228,7 +226,7 @@ class FarmController {
           message: `${foundOne.name} successfully deleted`,
         });
       } else {
-        throw { name:"InvalidFarmId"};
+        throw { name: "InvalidFarmId" };
       }
     } catch (err) {
       next(err);
@@ -256,14 +254,10 @@ class FarmController {
       res.status(200).json({
         message: `Farm status updated to ${status}`,
       });
-    } catch (error) {
-      res.status(500).json({
-        message: "Internal server error",
-      });
+    } catch (err) {
+      next(err)
     }
   }
-
-  
 }
 
 module.exports = FarmController;

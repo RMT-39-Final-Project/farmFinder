@@ -11,8 +11,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(fileUpload());
 app.use(cors());
 app.use(router);
+
+
 app.use(errorHandler);
 
 app.listen(port, () => {
-  console.log(`server is running on ${port}`);
+  console.log(`Server is running on ${port}`);
 });
+

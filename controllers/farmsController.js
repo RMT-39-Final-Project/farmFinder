@@ -32,7 +32,7 @@ class FarmController {
     }
   }
 
-  static async getFarmById(req, res, next) {
+  static async getFarmById(req, res) {
     try {
       const { farmId } = req.params;
       const farm = await Farm.findOne({
@@ -220,7 +220,7 @@ class FarmController {
     if (!foundOne) {
       throw { name: "Farm Not Found" };
     }
-    const deleted = await Item.destroy({ where: { id: id } });
+    const deleted = await Farm.destroy({ where: { id: farmId } });
     try {
       if (deleted) {
         res.status(200).json({
@@ -231,10 +231,38 @@ class FarmController {
         throw { name:"InvalidFarmId"};
       }
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
+
+  static async updateFarmStatus(req, res, next) {
+    try {
+      const { farmId } = req.params;
+      const { status } = req.body;
+
+      if (!["unverified", "verified", "sold"].includes(status)) {
+        return res.status(400).json({ message: "Invalid status value." });
+      }
+
+      const updatedFarm = await Farm.update(
+        { status: status },
+        { where: { id: farmId } }
+      );
+
+      if (updatedFarm[0] === 0) {
+        throw { name: "InvalidFarmId" };
+      }
+
+      res.status(200).json({
+        message: `Farm status updated to ${status}`,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "Internal server error",
+      });
+    }
+  }
+
   
 }
 

@@ -21,9 +21,9 @@ class FarmController {
         order: [["createdAt", "ASC"]],
       });
       if (farms) {
-        res.status(200).json({
+        res.status(200).json(
           farms,
-        });
+        );
       }
     } catch (err) {
       next(err);
@@ -179,9 +179,9 @@ class FarmController {
         order: [["createdAt", "ASC"]],
       });
       if (farms) {
-        res.status(200).json({
+        res.status(200).json(
           farms,
-        });
+        );
       }
     } catch (err) {
       next(err);

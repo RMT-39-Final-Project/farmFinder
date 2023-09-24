@@ -375,14 +375,183 @@
     "message": "username is required"
 }
 ```
+
 # Farm
 ## EndPoint
 ### GET /farms
+#### Response: _200 Ok_
+- Body
+```json
+[
+    {
+        "id": 1,
+        "name": "Lestari Ayam",
+        "category": "Chicken",
+        "city": "Surabaya",
+        "address": "Jalan Timur 1",
+        "latitude": -7.245312,
+        "longitude": 112.758554,
+        "mainImgUrl": "https://i2.wp.com/gdm.id/wp-content/uploads/2022/05/kandang-ayam-open-house-1024x614.jpg",
+        "videoUrl": "https://www.youtube.com/watch?v=T9PFzLBVZvg",
+        "status": "verified",
+        "benefits": "Profit per periode penjualan akan diberikan sebagai dividend kepada investor",
+        "sharePercent": 50,
+        "price": 300000,
+        "FarmerId": 1,
+        "Images": [
+            {
+                "id": 1,
+                "FarmId": 1,
+                "imgUrl": "https://i2.wp.com/gdm.id/wp-content/uploads/2021/07/bisnis-ternak-ayam-kampung-1024x600.jpg"
+            },
+            {
+                "id": 2,
+                "FarmId": 1,
+                "imgUrl": "https://cdn1.katadata.co.id/media/images/thumb/2023/01/04/Ilustrasi_Ayam_Ternak-2023_01_04-15_02_04_cc5715b207ea7ef47cb9b961683c4bad_960x640_thumb.jpg"
+            },
+            {
+                "id": 3,
+                "FarmId": 1,
+                "imgUrl": "https://agribisnis.co.id/wp-content/uploads/2016/08/ayam-petelur-1.jpg"
+            }
+        ]
+    },
+    ...
+]
+```
 ### GET /farms/my-farms/farm
+#### Response: _200 Ok_
+- Body
+```json
+[
+    {
+        "id": 1,
+        "name": "Lestari Ayam",
+        "category": "Chicken",
+        "city": "Surabaya",
+        "address": "Jalan Timur 1",
+        "latitude": -7.245312,
+        "longitude": 112.758554,
+        "mainImgUrl": "https://i2.wp.com/gdm.id/wp-content/uploads/2022/05/kandang-ayam-open-house-1024x614.jpg",
+        "videoUrl": "https://www.youtube.com/watch?v=T9PFzLBVZvg",
+        "status": "verified",
+        "benefits": "Profit per periode penjualan akan diberikan sebagai dividend kepada investor",
+        "sharePercent": 50,
+        "price": 300000,
+        "FarmerId": 1,
+        "Images": [
+            {
+                "id": 1,
+                "FarmId": 1,
+                "imgUrl": "https://i2.wp.com/gdm.id/wp-content/uploads/2021/07/bisnis-ternak-ayam-kampung-1024x600.jpg"
+            },
+            {
+                "id": 2,
+                "FarmId": 1,
+                "imgUrl": "https://cdn1.katadata.co.id/media/images/thumb/2023/01/04/Ilustrasi_Ayam_Ternak-2023_01_04-15_02_04_cc5715b207ea7ef47cb9b961683c4bad_960x640_thumb.jpg"
+            },
+            {
+                "id": 3,
+                "FarmId": 1,
+                "imgUrl": "https://agribisnis.co.id/wp-content/uploads/2016/08/ayam-petelur-1.jpg"
+            }
+        ]
+    },
+    ...
+]
+```
 ### POST /farms/my-farms/farm
 ### DELETE /farms/my-farms/:farmId
 ### GET /farms/:farmId
+- Request Params 
+```json
+{
+    "farmId": integer
+}
+```
+#### Response: _200 Ok_
+```json
+{
+    "id": 1,
+    "name": "Lestari Ayam",
+    "category": "Chicken",
+    "city": "Surabaya",
+    "address": "Jalan Timur 1",
+    "latitude": -7.245312,
+    "longitude": 112.758554,
+    "mainImgUrl": "https://i2.wp.com/gdm.id/wp-content/uploads/2022/05/kandang-ayam-open-house-1024x614.jpg",
+    "videoUrl": "https://www.youtube.com/watch?v=T9PFzLBVZvg",
+    "status": "verified",
+    "benefits": "Profit per periode penjualan akan diberikan sebagai dividend kepada investor",
+    "sharePercent": 50,
+    "price": 300000,
+    "FarmerId": 1,
+    "createdAt": "2023-09-24T13:21:28.239Z",
+    "updatedAt": "2023-09-24T13:21:28.239Z",
+    "Images": [
+        {
+            "id": 1,
+            "FarmId": 1,
+            "imgUrl": "https://i2.wp.com/gdm.id/wp-content/uploads/2021/07/bisnis-ternak-ayam-kampung-1024x600.jpg"
+        },
+        {
+            "id": 2,
+            "FarmId": 1,
+            "imgUrl": "https://cdn1.katadata.co.id/media/images/thumb/2023/01/04/Ilustrasi_Ayam_Ternak-2023_01_04-15_02_04_cc5715b207ea7ef47cb9b961683c4bad_960x640_thumb.jpg"
+        },
+        {
+            "id": 3,
+            "FarmId": 1,
+            "imgUrl": "https://agribisnis.co.id/wp-content/uploads/2016/08/ayam-petelur-1.jpg"
+        }
+    ]
+}
+```
 ### GET /farms/my-farms/:farmId
+- Request Params 
+```json
+{
+    "farmId": integer
+}
+```
+#### Response: _200 Ok_
+```json
+{
+    "id": 1,
+    "name": "Lestari Ayam",
+    "category": "Chicken",
+    "city": "Surabaya",
+    "address": "Jalan Timur 1",
+    "latitude": -7.245312,
+    "longitude": 112.758554,
+    "mainImgUrl": "https://i2.wp.com/gdm.id/wp-content/uploads/2022/05/kandang-ayam-open-house-1024x614.jpg",
+    "videoUrl": "https://www.youtube.com/watch?v=T9PFzLBVZvg",
+    "status": "verified",
+    "benefits": "Profit per periode penjualan akan diberikan sebagai dividend kepada investor",
+    "sharePercent": 50,
+    "price": 300000,
+    "FarmerId": 1,
+    "createdAt": "2023-09-24T13:21:28.239Z",
+    "updatedAt": "2023-09-24T13:21:28.239Z",
+    "Images": [
+        {
+            "id": 1,
+            "FarmId": 1,
+            "imgUrl": "https://i2.wp.com/gdm.id/wp-content/uploads/2021/07/bisnis-ternak-ayam-kampung-1024x600.jpg"
+        },
+        {
+            "id": 2,
+            "FarmId": 1,
+            "imgUrl": "https://cdn1.katadata.co.id/media/images/thumb/2023/01/04/Ilustrasi_Ayam_Ternak-2023_01_04-15_02_04_cc5715b207ea7ef47cb9b961683c4bad_960x640_thumb.jpg"
+        },
+        {
+            "id": 3,
+            "FarmId": 1,
+            "imgUrl": "https://agribisnis.co.id/wp-content/uploads/2016/08/ayam-petelur-1.jpg"
+        }
+    ]
+}
+```
 ### PATCH /farms/:farmId
 
 # Report

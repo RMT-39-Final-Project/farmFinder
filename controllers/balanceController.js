@@ -49,7 +49,7 @@ class BalanceController {
   static async updateStatusBalance(req, res, next) {
     try {
       if (!req.body.status) {
-        return res.status(400).json('status is required');
+        return res.status(400).json({message: 'status is required'});
       }
       const dataFind = await Balance.findByPk(req.params.balanceId);
       if (!dataFind) {
@@ -164,9 +164,9 @@ class BalanceController {
     try {
       const { total, username } = req.body;
       if (!total) {
-        return res.status(400).json({ message: 'total is require' });
+        return res.status(400).json({ message: 'total is required' });
       } else if (!username) {
-        return res.status(400).json({ message: 'total is require' });
+        return res.status(400).json({ message: 'username is required' });
       }
       let snap = new midtransClient.Snap({
         isProduction: false,
@@ -189,6 +189,7 @@ class BalanceController {
       const midransToken = await snap.createTransaction(parameter);
       res.status(201).json(midransToken);
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }

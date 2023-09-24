@@ -1,4 +1,4 @@
-# Users
+# User
 ## EndPoint
 ### GET /users/investors
 #### Response: _200 Ok_
@@ -72,7 +72,7 @@
     "message": "Email must be unique"
 }
 ```
-#### Response: _200 Ok_
+#### Response: _201 Created_
 - Body
 ```json
 {
@@ -132,7 +132,7 @@
     "address": "string"
 }
 ```
-#### Response: _200 Ok_
+#### Response: _201 Created_
 - Body
 ```json
 {
@@ -210,16 +210,171 @@
 }
 ```
 
-# Balance
-## EndPoint
-### GET /balances
+## Balance
+### GET /balances/:balanceId
+- Request params
+```json
+{
+    "balanceId": <integer>
+}
+```
+#### Response: _200 Ok_
+- Body
+```json
+{
+    "id": 1,
+    "userId": 1,
+    "balance": 100000,
+    "status": "success",
+    "Investor": {
+        "id": 1,
+        "username": "John Doe",
+        "email": "invest@mail.com",
+        "phoneNumber": "07142421424"
+    }
+}
+```
 ### POST /balances
+- Request Body
+```json
+{
+    "userId": <integer>,
+    "balance": integer,
+    "status": "string"
+}
+```
+#### Response: _200 Ok_
+- Body
+```json
+{
+    "id": 2,
+    "userId": 2,
+    "balance": 100,
+    "status": "success"
+}
+```
 ### PUT /balances/status/:balanceId
-### PATCH /balances/increments/:balanceId
-### PATCH /balances/decrements/:balanceId
-### DELETE /balances
-### POST /balances/payments-token
+- Request Body
+```json
+{
+    "status": "success"
+}
+```
+#### Response: _200 Ok_
+- Body
+```json
+{
+    "id": 2,
+    "userId": 2,
+    "balance": 100,
+    "status": "success"
+}
+```
 
+#### BadRequest: _400 BadRequest_
+- Body
+```json
+{
+    "message": "status is required"
+}
+```
+### PATCH /balances/increments/:balanceId
+- Request Body
+```json
+{
+    "balance": integer
+}
+```
+#### Response: _200 Ok_
+- Body 
+```json
+{
+    "message": "success add balance",
+    "data": {
+        "id": 1,
+        "userId": 1,
+        "balance": 110000,
+        "status": "success"
+    }
+}
+```
+#### BadRequest: _400 BadRequest_
+```json
+{
+    "message": "balance must be positif number"
+}
+```
+### PATCH /balances/decrements/:balanceId
+- Request Body
+```json
+{
+    "balance": integer
+}
+```
+#### Response: _200 Ok_
+- Body 
+```json
+{
+    "message": "success add balance",
+    "data": {
+        "id": 1,
+        "userId": 1,
+        "balance": 110000,
+        "status": "success"
+    }
+}
+```
+#### BadRequest: _400 BadRequest_
+```json
+{
+    "message": "balance must be positif number"
+}
+```
+### DELETE /balances/balanceId
+- Request params
+```json
+{
+    "balanceId": integer
+}
+```
+#### Response: _200 Ok_
+```json
+{
+    "message": "deleted balance success",
+    "data": {
+        "id": 2,
+        "userId": 2,
+        "balance": 100,
+        "status": "success"
+    }
+}
+```
+### POST /balances/payments-token
+- Request Body
+```json
+{ 
+    "total": integer, 
+    "username": "string"
+} 
+```
+#### Response: _200 Ok_
+- Body
+```json
+{
+    "token": "3b78fd0f-4436-4d40-b2b8-da598b858533",
+    "redirect_url": "https://app.sandbox.midtrans.com/snap/v3/redirection/3b78fd0f-4436-4d40-b2b8-da598b858533"
+}
+```
+#### BadResponse: _400 BadRequest_
+```json
+{
+    "message": "total is required"
+}
+(or)
+{
+    "message": "username is required"
+}
+```
 # Farm
 ## EndPoint
 ### GET /farms

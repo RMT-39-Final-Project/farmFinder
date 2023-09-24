@@ -26,7 +26,7 @@ const errorHandler = (err, req, res, next) => {
   } else if (err.name === "farmer_banned") {
     status = 400;
     message = "Your account is banned";
-  } else if (error.name === "Bad request") {
+  } else if (err.name === "Bad request") {
     status = 400;
     message = "Description cannot be empty!";
   } else if (err.name === "farmer_not_found") {
@@ -35,6 +35,9 @@ const errorHandler = (err, req, res, next) => {
   } else if (err.name === "farmer_banned") {
     status = 400;
     message = "Your account is banned";
+  } else if ((err.name = "report_not_found")) {
+    status = 404;
+    message = `report with id ${err.id} not found`;
   }
   res.status(status).json({ message: message });
 };

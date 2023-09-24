@@ -86,7 +86,6 @@ class UserController {
       if (!user) throw { name: "invalid_email/password" };
       const valid = compare(password, user.password);
       if (!valid) throw { name: "invalid_email/password" };
-
       if (user.status === "unactive") throw { name: "farmer_banned" };
       const access_token = token({ id: user.id });
       res.status(200).json({ access_token });
@@ -95,21 +94,6 @@ class UserController {
     }
   }
 
-  static async editStatusFarmer(req, res, next) {
-    try {
-      const farmer = await Farmer.findByPk(req.params.id);
-      if (!farmer) throw { name: "farmer_not_found", id: req.params.id };
-      const data = await Farmer.update(
-        { status: "unactive" },
-        { where: { id: req.params.id, status: "active" } }
-      );
-      res
-        .status(200)
-        .json({ message: `Farmer with id ${req.params.id} unactived` });
-    } catch (err) {
-      next(err);
-    }
-  }
   static async editStatusFarmer(req, res, next) {
     try {
       const farmer = await Farmer.findByPk(req.params.id);

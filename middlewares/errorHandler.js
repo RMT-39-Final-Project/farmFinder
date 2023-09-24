@@ -10,7 +10,7 @@ const errorHandler = (err, req, res, next) => {
     message = err.errors[0].message;
   } else if (err.name === "investor_not_found") {
     status = 404;
-    message = `Investor with id ${err.id} not found`;
+    message = `investor with id ${err.id} not found`;
   } else if (err.name === "email/password_required") {
     status = 400;
     message = "Email/Password required";

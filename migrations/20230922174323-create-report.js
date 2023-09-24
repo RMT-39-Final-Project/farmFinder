@@ -11,17 +11,17 @@ module.exports = {
       },
       investorId: {
         type: Sequelize.INTEGER,
-        // references: {
-        //   model: 'Investors',
-        //   key: 'id'
-        // }
+        references: {
+          model: 'Investors',
+          key: 'id'
+        }
       },
       farmId: {
         type: Sequelize.INTEGER,
-        // references: {
-        //   model: 'Farms',
-        //   key: 'id'
-        // }
+        references: {
+          model: 'Farms',
+          key: 'id'
+        }
       },
       description: {
         type: Sequelize.STRING,

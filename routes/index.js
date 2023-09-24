@@ -7,9 +7,9 @@ const report = require("./reports");
 const router = express.Router();
 
 router.use("/users", users);
-router.use("/farm", farm);
+router.use("/farms", farm);
 router.use("/invest", invest);
 router.use("/balances", balance);
-router.use("/report", report);
+router.use("/reports", report);
 
 module.exports = router;

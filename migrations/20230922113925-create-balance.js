@@ -13,14 +13,14 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
         unique: true,
-        // references: {
-        //   model: {
-        //     tableName: "Users",
-        //   },
-        //   key: "id"
-        // },
-        // onDelete: "cascade",
-        // onUpdate: "cascade",
+        references: {
+          model: {
+            tableName: "Investors",
+          },
+          key: "id"
+        },
+        onDelete: "cascade",
+        onUpdate: "cascade",
       },
       balance: {
         type: Sequelize.INTEGER,

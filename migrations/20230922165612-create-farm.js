@@ -60,10 +60,10 @@ module.exports = {
       FarmerId: {
         type: Sequelize.INTEGER,
         allowNull: false ,
-        // references: {
-        //   model: 'Farmers', 
-        //   key: 'id' 
-        // }
+        references: {
+          model: 'Farmers', 
+          key: 'id' 
+        }
       },
       createdAt: {
         allowNull: false,

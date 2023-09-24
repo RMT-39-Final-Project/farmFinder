@@ -14,14 +14,18 @@ module.exports = {
         references: {
           model: 'Investors',
           key: 'id'
-        }
+        },
+        onDelete: "cascade",
+        onUpdate: "cascade"
       },
       farmId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Farms',
           key: 'id'
-        }
+        },
+        onDelete: "cascade",
+        onUpdate: "cascade"
       },
       description: {
         type: Sequelize.STRING,

@@ -1,4 +1,4 @@
-const { Balance } = require('../models');
+const { Balance, Investor } = require('../models');
 const midtransClient = require('midtrans-client');
 
 class BalanceController {
@@ -6,9 +6,14 @@ class BalanceController {
     try {
       const data = await Balance.findAll({
         attributes: { exclude: ['createdAt', 'updatedAt'] },
+        include: {
+          model: Investor,
+          attributes: { exclude: ['createdAt', 'updatedAt', "password"] },
+        }
       });
       res.status(200).json(data);
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }
@@ -17,6 +22,10 @@ class BalanceController {
       const data = await Balance.findOne({
         where: { id: req.params.balanceId },
         attributes: { exclude: ['createdAt', 'updatedAt'] },
+        include: {
+          model: Investor,
+          attributes: { exclude: ['createdAt', 'updatedAt', "password"] },
+        }
       });
       if (!data) {
         throw { name: 'not_found' };

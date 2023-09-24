@@ -6,10 +6,11 @@ const balance = require("./balance");
 const report = require("./reports");
 const router = express.Router();
 
-router.use("/users", users);
-router.use("/farms", farm);
-router.use("/invest", invest);
-router.use("/balances", balance);
-router.use("/reports", report);
+router
+    .use("/users", users)
+    .use("/balances", balance)
+    .use("/farms", farm)
+    .use("/reports", report)
+    // .use("/invest", invest)
 
 module.exports = router;

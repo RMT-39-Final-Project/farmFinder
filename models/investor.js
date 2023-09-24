@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
   class Investor extends Model {
 
     static associate(models) {
-      // define association here
+      this.hasOne(models.Balance, {foreignKey: "userId"})
     }
   }
   Investor.init(
@@ -30,10 +30,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         validate: {
           notEmpty: {
-            msg: "Email is required!",
+            msg: "Email is required",
           },
           notNull: {
-            msg: "Email is required!",
+            msg: "Email is required",
           },
           isEmail: {
             msg: "Email format wrong",
@@ -64,7 +64,6 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      balance: DataTypes.INTEGER,
     },
     {
       sequelize,

@@ -3,7 +3,7 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Balance extends Model {
     static associate(models) {
-      this.belongsTo(models.Farmer)
+      this.belongsTo(models.Investor, {foreignKey: "userId"})
     }
   }
   Balance.init(

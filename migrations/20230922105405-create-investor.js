@@ -22,9 +22,6 @@ module.exports = {
       phoneNumber: {
         type: Sequelize.STRING,
       },
-      balance: {
-        type: Sequelize.INTEGER,
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

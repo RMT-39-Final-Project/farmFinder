@@ -9,12 +9,23 @@ module.exports = {
       "Investors",
       [
         {
-          id: 1,
           username: "John Doe",
           email: "invest@mail.com",
           password: hash("testing"),
           phoneNumber: "07142421424",
-          balance: 0,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ],
+      {}
+    );
+    await queryInterface.bulkInsert(
+      "Balances",
+      [
+        {
+          balance: 100000,
+          userId: 1,
+          status: "success",
           createdAt: new Date(),
           updatedAt: new Date(),
         },

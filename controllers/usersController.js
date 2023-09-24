@@ -50,7 +50,6 @@ class UserController {
       next(err);
     }
   }
-
   static async findOneFarmer(req, res, next) {
     try {
       const data = await Farmer.findByPk(req.params.id);

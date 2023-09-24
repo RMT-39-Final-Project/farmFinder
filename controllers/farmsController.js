@@ -139,7 +139,6 @@ class FarmController {
       await transaction.commit();
       res.status(201).json({ createdFarm });
     } catch (err) {
-      console.log(err);
       fs.unlink(uploadPath, (unlinkError) => {
         if (unlinkError) console.error(`Unable to delete file: ${uploadPath}`);
       });

@@ -13,7 +13,6 @@ class BalanceController {
       });
       res.status(200).json(data);
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }
@@ -189,7 +188,6 @@ class BalanceController {
       const midransToken = await snap.createTransaction(parameter);
       res.status(201).json(midransToken);
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }

@@ -4,11 +4,9 @@ const { Investor, Farmer } = require('../models');
 class UserController {
   static async findInvestor(req, res, next) {
     try {
-      console.log("test");
       const data = await Investor.findAll({attributes: {exclude: ["password", "createdAt", "updatedAt"]}});
       res.status(200).json(data);
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }

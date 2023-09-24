@@ -68,7 +68,6 @@ class FarmController {
     if (!req.files || Object.keys(req.files).length === 0) {
       return res.status(400).json({ message: "No files were uploaded." });
     }
-
     const mainImgFile = req.files.photoUrl;
     const uploadPath = path.join(serverPath, mainImgFile.name);
 
@@ -96,7 +95,7 @@ class FarmController {
           benefits,
           sharePercent,
           price,
-          FarmerId: 1, //ganti jadi req.user.Id,
+          FarmerId: req.farmer.id
         },
         { transaction }
       );
@@ -167,7 +166,7 @@ class FarmController {
     try {
       const farms = await Farm.findAll({
         where: {
-          FarmerId: 1, //req.user.id,
+          FarmerId: req.farmer.id
         },
         include: [
           {

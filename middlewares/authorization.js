@@ -11,10 +11,7 @@ async function authorizeDeleteFarm(req, res, next) {
     }
 
     if (foundFarm.status === "verified") {
-      return res.status(403).json({
-        status:403,
-        message:"Verified farms can only be deleted by contacting admin"
-      })
+      throw {name: "forbidden"}
     }
 
     next();

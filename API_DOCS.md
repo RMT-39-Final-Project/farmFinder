@@ -461,7 +461,17 @@
 ]
 ```
 ### POST /farms/my-farms/farm
+- Request Body
+```json
+
+```
 ### DELETE /farms/my-farms/:farmId
+- Request Params 
+```json
+{
+    "farmId": integer
+}
+```
 ### GET /farms/:farmId
 - Request Params 
 ```json
@@ -553,9 +563,134 @@
 }
 ```
 ### PATCH /farms/:farmId
-
+- Request Params
+```json
+{
+    "farmId": integer
+}
+```
+- Request Body
+```json
+{
+    "status": "string"
+}
+```
+#### Response: _200 Ok_
+- Body
+```json
+{
+    "message": "Farm with id: <id> status updated to verified"
+}
+```
 # Report
 ## EndPoint
 ### GET /reports
+#### Response: _200 Ok_
+- Body
+```json
+[
+    {
+        "id": 1,
+        "investorId": 1,
+        "farmId": 1,
+        "description": "This farm is recommended for family invesment!",
+        "createdAt": "2023-09-24T16:33:34.575Z",
+        "updatedAt": "2023-09-24T16:33:34.575Z"
+    },
+    {
+        "id": 2,
+        "investorId": 1,
+        "farmId": 1,
+        "description": "Very good service, good land to invest here or build a business",
+        "createdAt": "2023-09-24T16:33:34.575Z",
+        "updatedAt": "2023-09-24T16:33:34.575Z"
+    },
+    {
+        "id": 3,
+        "investorId": 1,
+        "farmId": 1,
+        "description": "The land is not as expected, there are many shortcomings",
+        "createdAt": "2023-09-24T16:33:34.575Z",
+        "updatedAt": "2023-09-24T16:33:34.575Z"
+    }
+]
+```
 ### POST /reports
-### GET /reports/:id
+- Request Body
+```json
+{
+    "investorId": "integer",
+    "farmId": "integer",
+    "description": "string"
+}
+```
+#### Response: _201  Ok_
+- Body
+```json
+{
+    "message": "New description added"
+}
+```
+### GET /reports/:id,
+- Request params
+```json
+{
+    "id": "integer"
+}
+```
+#### Response: _200 Ok_
+```json
+{
+    "id": 1,
+    "investorId": 1,
+    "farmId": 1,
+    "description": "This farm is recommended for family invesment!",
+    "createdAt": "2023-09-24T16:33:34.575Z",
+    "updatedAt": "2023-09-24T16:33:34.575Z"
+}
+```
+### GLOBAL ERROR 
+#### NotFound: _404 NotFound_
+- Body
+```json
+{
+    "message": "report with id 5 not found"
+}
+(or)
+{
+    "message": "not found"
+}
+(or)
+{
+    "message": "Farmer with id <id> not found"
+}
+(or)
+{
+    "message": "Investor with id <id> not found"
+}
+```
+#### Internal Server Error: _401 UnAuthorized_
+- Body
+```json
+{
+    "message": "Invalid token"
+}
+```
+#### Internal Server Error: _403 Forbidden_
+- Body
+```json
+{
+    "message": "Your account is banned"
+}
+(or)
+{
+    "message": "UnAuthorized"
+}
+```
+#### Internal Server Error: _500 InternalServerError_
+- Body
+```json
+{
+    "message": "Internal Server Error"
+}
+```

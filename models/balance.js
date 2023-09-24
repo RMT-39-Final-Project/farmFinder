@@ -1,5 +1,5 @@
-'use strict';
-const { Model } = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Balance extends Model {
     static associate(models) {
@@ -13,11 +13,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: {
           args: true,
-          msg: 'userId must be unique',
+          msg: "userId must be unique",
         },
         validate: {
-          notEmpty: { msg: 'userId is required' },
-          notNull: { msg: 'userId is required' },
+          notEmpty: { msg: "userId is required" },
+          notNull: { msg: "userId is required" },
         },
       },
       balance: { type: DataTypes.INTEGER },
@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'Balance',
+      modelName: "Balance",
     }
   );
   return Balance;

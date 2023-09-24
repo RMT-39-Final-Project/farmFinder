@@ -89,7 +89,7 @@ class UserController {
 
       if (user.status === "unactive") throw { name: "farmer_banned" };
       const access_token = token({ id: user.id });
-      res.status(200).json({ access_token, user });
+      res.status(200).json({ access_token });
     } catch (err) {
       next(err);
     }

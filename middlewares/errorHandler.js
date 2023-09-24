@@ -10,7 +10,7 @@ const errorHandler = (err, req, res, next) => {
     message = err.errors[0].message;
   } else if (err.name === "investor_not_found") {
     status = 404;
-    message = `investor with id ${err.id} not found`;
+    message = `Investor with id ${err.id} not found`;
   } else if (err.name === "email/password_required") {
     status = 400;
     message = "Email/Password required";
@@ -26,6 +26,9 @@ const errorHandler = (err, req, res, next) => {
   } else if (error.name === "Bad request") {
     status = 400;
     message = "Description cannot be empty!";
+  } else if (err.name === "farmer_not_found") {
+    status = 404;
+    message = `Farmer with id ${err.id} not found`;
   }
   res.status(status).json({ message: message });
 };

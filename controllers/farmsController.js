@@ -1,5 +1,5 @@
 const imagekit = require("../config/imagekitConfig");
-const { Farm, Image } = require("../models");
+const { Farm, Image, sequelize } = require("../models");
 const fs = require("fs");
 const path = require("path");
 const serverPath = path.join(__dirname, "..", "uploads");

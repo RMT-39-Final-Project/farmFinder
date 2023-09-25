@@ -12,24 +12,24 @@ module.exports = {
       investorId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Investors',
-          key: 'id'
+          model: "Investors",
+          key: "id",
         },
         onDelete: "cascade",
-        onUpdate: "cascade"
+        onUpdate: "cascade",
       },
       farmId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Farms',
-          key: 'id'
+          model: "Farms",
+          key: "id",
         },
         onDelete: "cascade",
-        onUpdate: "cascade"
+        onUpdate: "cascade",
       },
       description: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,

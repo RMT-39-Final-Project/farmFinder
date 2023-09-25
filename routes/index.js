@@ -5,7 +5,6 @@ const invest = require("./invests");
 const balance = require("./balance");
 const report = require("./reports");
 const router = express.Router();
-
 const transaction = require('../routes/transaction')
 router
     .use("/users", users)

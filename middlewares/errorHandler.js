@@ -18,7 +18,7 @@ const errorHandler = (err, req, res, next) => {
   } else if (err.name === "JsonWebTokenError") {
     status = 401;
     message = "Invalid token";
-  } else if (error.name === "Bad request") {
+  } else if (err.name === "Bad request") {
     status = 400;
     message = "Description cannot be empty!";
   }

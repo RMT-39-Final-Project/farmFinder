@@ -46,10 +46,9 @@ class InvestController {
         res.status(201).json(data);
       }
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }
 }
 
-// module.exports = InvestController;
+module.exports = InvestController;

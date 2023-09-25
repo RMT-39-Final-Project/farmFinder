@@ -28,13 +28,8 @@ class UserController {
         password,
         phoneNumber,
       });
-      const dataInvestor = {
-        id: data.id,
-        username: data.username,
-        email: data.email,
-        phoneNumber: data.phoneNumber,
-      };
-      res.status(201).json(dataInvestor);
+      const access_token = token({ id: data.id });
+      res.status(201).json({access_token, id: data.id });
     } catch (err) {
       next(err);
     }

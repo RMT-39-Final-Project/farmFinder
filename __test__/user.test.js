@@ -116,7 +116,7 @@ describe('Farmer Test', () => {
       expect(response.body).toHaveProperty(
         'message',
         'Email/Password required'
-      );
+      ); 
     });
     it('should response with status 400 when email empty/null', async () => {
       const response = await request(app).post('/users/farmers/login').send({

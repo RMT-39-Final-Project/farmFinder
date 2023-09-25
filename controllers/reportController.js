@@ -7,7 +7,6 @@ class ReportController {
 
       res.status(200).json(report);
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }

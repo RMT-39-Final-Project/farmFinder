@@ -52,4 +52,4 @@ class InvestController {
   }
 }
 
-module.exports = InvestController;
+// module.exports = InvestController;

@@ -21,9 +21,9 @@ class FarmController {
         order: [["createdAt", "ASC"]],
       });
       if (farms) {
-        res.status(200).json({
+        res.status(200).json(
           farms,
-        });
+        );
       }
     } catch (err) {
       next(err);
@@ -68,7 +68,6 @@ class FarmController {
     if (!req.files || Object.keys(req.files).length === 0) {
       return res.status(400).json({ message: "No files were uploaded." });
     }
-
     const mainImgFile = req.files.photoUrl;
     const uploadPath = path.join(serverPath, mainImgFile.name);
 
@@ -96,7 +95,7 @@ class FarmController {
           benefits,
           sharePercent,
           price,
-          FarmerId: 1, //ganti jadi req.user.Id,
+          FarmerId: req.farmer.id
         },
         { transaction }
       );
@@ -140,7 +139,6 @@ class FarmController {
       await transaction.commit();
       res.status(201).json({ createdFarm });
     } catch (err) {
-      console.log(err);
       fs.unlink(uploadPath, (unlinkError) => {
         if (unlinkError) console.error(`Unable to delete file: ${uploadPath}`);
       });
@@ -167,7 +165,7 @@ class FarmController {
     try {
       const farms = await Farm.findAll({
         where: {
-          FarmerId: 1, //req.user.id,
+          FarmerId: req.farmer.id
         },
         include: [
           {
@@ -179,9 +177,9 @@ class FarmController {
         order: [["createdAt", "ASC"]],
       });
       if (farms) {
-        res.status(200).json({
+        res.status(200).json(
           farms,
-        });
+        );
       }
     } catch (err) {
       next(err);

@@ -36,8 +36,9 @@ beforeAll(async () => {
       balance: 1000000,
       createdAt: new Date(),
       updatedAt: new Date(),
-    },
+    }
   ]);
+
   await sequelize.queryInterface.bulkInsert("Investors", [
     {
       username: "John Doe",
@@ -47,7 +48,7 @@ beforeAll(async () => {
       balance: 100000,
       createdAt: new Date(),
       updatedAt: new Date(),
-    },
+    }
   ]);
 
   farm = farm.map((el) => {
@@ -85,8 +86,10 @@ afterAll(async () => {
     restartIdentity: true,
   });
 });
+describe("Report Test", ()=>{
 
 describe("GET /reports", () => {
+
   it("responds with status 200 when success get reports", async () => {
     const response = await request(app).get("/reports");
     expect(response.status).toBe(200);
@@ -95,6 +98,8 @@ describe("GET /reports", () => {
     // expect(response.body).toHaveProperty("description");
   });
 });
+})
+
 
 describe("POST /reports", () => {
   it("responds with status 201 when success post reports", async () => {
@@ -104,9 +109,11 @@ describe("POST /reports", () => {
       description:
         "Very good service, good land to invest here or build a business",
     });
+
     expect(response.status).toBe(201);
     expect(response.body).toBeInstanceOf(Object);
     expect(response.body).toHaveProperty("message", "New description added");
+
   });
 });
 
@@ -118,6 +125,7 @@ describe("GET /reports/:id", () => {
     // expect(response.body[0]).toHaveProperty("reports");
     expect(response.body).toHaveProperty("description");
     expect(response.body).toHaveProperty("investorId");
+
     expect(response.body).toHaveProperty("farmId");
   });
 });

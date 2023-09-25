@@ -573,6 +573,55 @@
 ```
 # Transaction
 ## EndPoint
+### PATCH /transactions/increments/:investorId
+- Request Body
+```json
+{
+    "investorId": integer
+}
+```
+#### Response: _200 Ok_
+- Body
+```json
+{
+    "message": "success add balance",
+    "data": {
+        "id": 1,
+        "username": "John Doe",
+        "email": "invest@mail.com",
+        "phoneNumber": "07142421424",
+        "balance": 200000
+    }
+}
+```
+### PATCH /transactions/decrements/:investorId
+- Request Body
+```json
+{
+    "investorId": integer
+}
+```
+#### Response: _200 Ok_
+- Body
+```json
+{
+    "message": "success sended balance",
+    "data": {
+        "id": 1,
+        "username": "John Doe",
+        "email": "invest@mail.com",
+        "phoneNumber": "07142421424",
+        "balance": 0
+    }
+}
+```
+#### Badrequest: _400 Badrequest_
+- Body
+```json
+{
+    "message": "balance is not enough"
+}
+```
 ### POST /transactions/payments-token
 - Request Body
 ```json

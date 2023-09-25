@@ -41,19 +41,17 @@ class TransactionController {
           await t.commit();
           return res
             .status(200)
-            .json({ message: 'success add balance', data: dataUpdated });
+            .json({ message: 'success added balance', data: dataUpdated });
         }
       }
     } catch (error) {
       await t.rollback();
       const data = await Investor.findByPk(req.params.investorId);
-      await Balance.create(
-        {
-          userId: req.params.investorId,
-          balance: data.balance,
-          status: 'failed',
-        }
-      );
+      await Balance.create({
+        userId: req.params.investorId,
+        balance: data.balance,
+        status: 'failed',
+      });
       next(error);
     }
   }
@@ -98,18 +96,16 @@ class TransactionController {
         await t.commit();
         return res
           .status(200)
-          .json({ message: 'success add balance', data: dataUpdated });
+          .json({ message: 'success sended balance', data: dataUpdated });
       }
     } catch (error) {
       await t.rollback();
       const dataFind = await Investor.findByPk(req.params.investorId);
-      await Balance.create(
-        {
-          userId: req.params.investorId, //! note
-          balance: dataFind.balance,
-          status: 'failed',
-        }
-      );
+      await Balance.create({
+        userId: req.params.investorId, //! note
+        balance: dataFind.balance,
+        status: 'failed',
+      });
       if (error.name === 'not_enough') {
         return res.status(400).json({ message: 'balance is not enough' });
       } else {

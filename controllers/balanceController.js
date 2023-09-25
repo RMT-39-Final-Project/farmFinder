@@ -37,6 +37,9 @@ class BalanceController {
   }
   static async createBalance(req, res, next) {
     try {
+      if(!req.body.balance){
+        return res.status(400).json({"message": "balance is required"})
+      }
       const { id, userId, balance, status } = await Balance.create({
         ...req.body,
          status: "pending"

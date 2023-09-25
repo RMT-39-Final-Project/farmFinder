@@ -4,7 +4,7 @@
   "description": "Final Project for Hacktiv8 by - Kevin, Asyraf, Ahmad, and Gavril",
   "main": "index.js",
   "scripts": {
-    "test": "npx jest --forceExit --detectOpenHandles",
+    "test": "npx jest --forceExit --detectOpenHandlesm --coverage",
     "dev": "nodemon bin/www"
   },
   "keywords": [],

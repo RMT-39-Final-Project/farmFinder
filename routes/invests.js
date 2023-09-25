@@ -1,4 +1,4 @@
-// const express = require("express");
-// const invest = express.Router();
+const express = require("express");
+const invest = express.Router();
 
-// module.exports = invest;
+module.exports = invest;

@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
   class Investor extends Model {
 
     static associate(models) {
-      this.hasOne(models.Balance, {foreignKey: "userId"})
+      this.hasMany(models.Balance, {foreignKey: "userId"})
     }
   }
   Investor.init(
@@ -64,6 +64,9 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
+      balance: {
+        type: DataTypes.INTEGER
+      }
     },
     {
       sequelize,

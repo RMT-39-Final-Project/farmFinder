@@ -13,6 +13,7 @@ module.exports = {
           email: "invest@mail.com",
           password: hash("testing"),
           phoneNumber: "07142421424",
+          balance: 100000,
           createdAt: new Date(),
           updatedAt: new Date(),
         },

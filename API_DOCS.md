@@ -278,58 +278,6 @@
     "message": "status is required"
 }
 ```
-### PATCH /balances/increments/:balanceId
-- Request Body
-```json
-{
-    "balance": integer
-}
-```
-#### Response: _200 Ok_
-- Body 
-```json
-{
-    "message": "success add balance",
-    "data": {
-        "id": 1,
-        "userId": 1,
-        "balance": 110000,
-        "status": "success"
-    }
-}
-```
-#### BadRequest: _400 BadRequest_
-```json
-{
-    "message": "balance must be positif number"
-}
-```
-### PATCH /balances/decrements/:balanceId
-- Request Body
-```json
-{
-    "balance": integer
-}
-```
-#### Response: _200 Ok_
-- Body 
-```json
-{
-    "message": "success add balance",
-    "data": {
-        "id": 1,
-        "userId": 1,
-        "balance": 110000,
-        "status": "success"
-    }
-}
-```
-#### BadRequest: _400 BadRequest_
-```json
-{
-    "message": "balance must be positif number"
-}
-```
 ### DELETE /balances/balanceId
 - Request params
 ```json
@@ -347,32 +295,6 @@
         "balance": 100,
         "status": "success"
     }
-}
-```
-### POST /balances/payments-token
-- Request Body
-```json
-{ 
-    "total": integer, 
-    "username": "string"
-} 
-```
-#### Response: _200 Ok_
-- Body
-```json
-{
-    "token": "3b78fd0f-4436-4d40-b2b8-da598b858533",
-    "redirect_url": "https://app.sandbox.midtrans.com/snap/v3/redirection/3b78fd0f-4436-4d40-b2b8-da598b858533"
-}
-```
-#### BadResponse: _400 BadRequest_
-```json
-{
-    "message": "total is required"
-}
-(or)
-{
-    "message": "username is required"
 }
 ```
 
@@ -649,6 +571,35 @@
     "updatedAt": "2023-09-24T16:33:34.575Z"
 }
 ```
+# Transaction
+## EndPoint
+### POST /transactions/payments-token
+- Request Body
+```json
+{ 
+    "total": integer, 
+    "username": "string"
+} 
+```
+#### Response: _200 Ok_
+- Body
+```json
+{
+    "token": "3b78fd0f-4436-4d40-b2b8-da598b858533",
+    "redirect_url": "https://app.sandbox.midtrans.com/snap/v3/redirection/3b78fd0f-4436-4d40-b2b8-da598b858533"
+}
+```
+#### BadResponse: _400 BadRequest_
+```json
+{
+    "message": "total is required"
+}
+(or)
+{
+    "message": "username is required"
+}
+```
+
 ### GLOBAL ERROR 
 #### NotFound: _404 NotFound_
 - Body

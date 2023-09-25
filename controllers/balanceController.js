@@ -39,6 +39,7 @@ class BalanceController {
     try {
       const { id, userId, balance, status } = await Balance.create({
         ...req.body,
+         status: "pending"
       });
       res.status(201).json({ id, userId, balance, status });
     } catch (error) {

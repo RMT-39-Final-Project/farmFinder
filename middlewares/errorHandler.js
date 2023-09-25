@@ -23,7 +23,7 @@ const errorHandler = (err, req, res, next) => {
     message = "Description cannot be empty!";
   }
   else if (err.name === "invalid_email/password") {
-    status = 400;
+    status = 401;
     message = "Email/Password invalid";
   } else if (err.name === "not_found") {
     status = 404;
@@ -32,7 +32,7 @@ const errorHandler = (err, req, res, next) => {
     status = 404;
     message = "Farm not found";
   } else if (err.name === "farmer_not_found") {
-    status = 400;
+    status = 404;
     message = `Farmer with id ${err.id} not found`;
   } else if (err.name === "farmer_banned") {
     status = 403;

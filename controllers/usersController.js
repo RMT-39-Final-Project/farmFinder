@@ -76,14 +76,8 @@ class UserController {
         phoneNumber,
       });
 
-      const dataFarmer = {
-        id: data.id,
-        username: data.username,
-        email: data.email,
-        phoneNumber: data.phoneNumber,
-        address: data.address,
-      };
-      res.status(201).json(dataFarmer);
+      const access_token = token({ id: data.id });
+      res.status(201).json({access_token, id: data.id });
     } catch (err) {
       next(err);
     }

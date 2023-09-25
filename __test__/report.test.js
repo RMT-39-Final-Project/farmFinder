@@ -92,7 +92,6 @@ describe("Report Test", () => {
       const response = await request(app).get("/reports");
       expect(response.status).toBe(200);
       expect(response.body).toBeInstanceOf(Object);
-      console.log(response.body);
     });
   });
 });

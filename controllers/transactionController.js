@@ -1,7 +1,10 @@
-const {Balance, Investor} = require('../models')
+const { Balance, Investor } = require('../models');
 const midtransClient = require('midtrans-client');
-class TransactionController{
-    static async addTotaltransaction(req, res, next) {
+const { sequelize } = require('../models');
+
+class TransactionController {
+  static async addTotaltransaction(req, res, next) {
+    const t = await sequelize.transaction();
     try {
       const balance = parseInt(req.body.balance);
       if (!balance) {
@@ -15,25 +18,47 @@ class TransactionController{
       } else {
         const data = await Investor.increment(
           { balance: balance },
-          { where: { id: dataFind.id } }
+          { where: { id: dataFind.id } },
+          { transaction: t }
         );
+
         if (!data[0]) {
           return res.status(200).json({ message: 'no data updated' });
         } else {
           const dataUpdated = await Investor.findOne({
             where: { id: req.params.investorId },
-            attributes: { exclude: ['createdAt', 'updatedAt'] },
+            attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
           });
+          await Balance.create(
+            {
+              userId: req.params.investorId,
+              balance: dataUpdated.balance,
+              status: 'success',
+            },
+            { transaction: t }
+          );
+
+          await t.commit();
           return res
             .status(200)
             .json({ message: 'success add balance', data: dataUpdated });
         }
       }
     } catch (error) {
+      await t.rollback();
+      const data = await Investor.findByPk(req.params.investorId);
+      await Balance.create(
+        {
+          userId: req.params.investorId,
+          balance: data.balance,
+          status: 'failed',
+        }
+      );
       next(error);
     }
   }
   static async minTotalTransaction(req, res, next) {
+    const t = await sequelize.transaction();
     try {
       const balance = parseInt(req.body.balance);
       if (!balance) {
@@ -41,28 +66,55 @@ class TransactionController{
           .status(400)
           .json({ message: 'balance must be positif number' });
       }
+
       const dataFind = await Investor.findByPk(req.params.investorId);
+      if (dataFind.balance <= 0) {
+        throw { name: 'not_enough' };
+      }
       if (!dataFind) {
         throw { name: 'not_found' };
       } else {
-        const data = await Investor.increment(
+        await Investor.increment(
           { balance: -balance },
-          { where: { id: dataFind.id } }
+          { where: { id: dataFind.id } },
+          { transaction: t }
         );
-        if (!data[0]) {
-          return res.status(200).json({ message: 'no data updated' });
-        } else {
-          const dataUpdated = await Investor.findOne({
-            where: { id: req.params.investorId },
-            attributes: { exclude: ['createdAt', 'updatedAt'] },
-          });
-          return res
-            .status(200)
-            .json({ message: 'success add balance', data: dataUpdated });
-        }
+
+        const dataUpdated = await Investor.findOne(
+          {
+            where: { id: dataFind.id },
+            attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+          },
+          { transaction: t }
+        );
+        await Balance.create(
+          {
+            userId: req.params.investorId,
+            balance: dataUpdated.balance,
+            status: 'success',
+          },
+          { transaction: t }
+        );
+        await t.commit();
+        return res
+          .status(200)
+          .json({ message: 'success add balance', data: dataUpdated });
       }
     } catch (error) {
-      next(error);
+      await t.rollback();
+      const dataFind = await Investor.findByPk(req.params.investorId);
+      await Balance.create(
+        {
+          userId: req.params.investorId, //! note
+          balance: dataFind.balance,
+          status: 'failed',
+        }
+      );
+      if (error.name === 'not_enough') {
+        return res.status(400).json({ message: 'balance is not enough' });
+      } else {
+        next(error);
+      }
     }
   }
   static async midtransToken(req, res, next) {
@@ -99,4 +151,4 @@ class TransactionController{
   }
 }
 
-module.exports = TransactionController
+module.exports = TransactionController;

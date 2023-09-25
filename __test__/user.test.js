@@ -71,7 +71,8 @@ beforeAll(async () => {
       email: 'invest@mail.com',
       password: 'testing',
     });
-  access_token_investor = responseInvestors.body.access_token; 
+
+  access_token_investor = responseInvestors.body.access_token 
 });
 
 afterAll(async () => {
@@ -240,7 +241,7 @@ describe('Farmer Test', () => {
 
     it('should response with status 404 when farmer id not found', async ()=>{
       const response = await request(app).get('/users/farmers/1000')
-      console.log(response.body );
+
       expect(response.status).toBe(404);
       expect(response.body).toBeInstanceOf(Object);
       expect(response.body).toHaveProperty('message', 'Farmer with id 1000 not found');
@@ -249,11 +250,52 @@ describe('Farmer Test', () => {
   })
 
   describe('PATCH /users/farmers/:id', () => {
-    it('should response with status 200 when farmer id not found', async () => {
-      // const response = (await request(app).patch('/users/farmers/1')).set("access_token", access_token_farmer)
-      // console.log(response.body );
-      // expect(response.status).toBe(200);
-      // expect(response.body).toBeInstanceOf(Object);
+    it('should response with status 200 when success', async () => {
+      const response = await request(app).patch('/users/farmers/1').set("access_token", access_token_farmer)
+
+      expect(response.status).toBe(200);
+      expect(response.body).toBeInstanceOf(Object);
+      expect(response.body).toHaveProperty('message', 'Farmer with id 1 unactived');
+
+    })
+
+    it('should response with status 401 when token invalid', async () => {
+      const response = await request(app).patch('/users/farmers/1').set("access_token", access_token_farmer+"1")
+
+      expect(response.status).toBe(401);
+      expect(response.body).toBeInstanceOf(Object);
+      expect(response.body).toHaveProperty('message', 'Invalid token');
+
     })
   })
 });
+
+describe('Investor', () => {
+  describe("GET /users/investors", ()=>{
+    it('should response with status 200 when Success', async() => {
+      const response = await request(app).get("/users/investors")
+
+      expect(response.status).toBe(200)
+      expect(response.body[0]).toHaveProperty("id")
+      expect(response.body[0]).toHaveProperty("username")
+      expect(response.body[0]).toHaveProperty("email")
+      expect(response.body[0]).toHaveProperty("phoneNumber")
+      expect(response.body[0]).toHaveProperty("balance")
+    })
+  })
+
+  describe("POST /users/investors/register", ()=>{
+    it('should response with status 200 when Success', async() => {
+      const response = await request(app).post("/users/investors/register").set({
+
+      })
+
+      expect(response.status).toBe(200)
+      expect(response.body[0]).toHaveProperty("id")
+      expect(response.body[0]).toHaveProperty("username")
+      expect(response.body[0]).toHaveProperty("email")
+      expect(response.body[0]).toHaveProperty("phoneNumber")
+      expect(response.body[0]).toHaveProperty("balance")
+    })
+  })
+})

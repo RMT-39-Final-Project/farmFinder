@@ -2,7 +2,6 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Report extends Model {
-
     static associate(models) {
       Report.belongsTo(models.Farm, { foreignKey: "farmId" });
       Report.belongsTo(models.Investor, { foreignKey: "investorId" });
@@ -10,8 +9,30 @@ module.exports = (sequelize, DataTypes) => {
   }
   Report.init(
     {
-      investorId: DataTypes.INTEGER,
-      farmId: DataTypes.INTEGER,
+      investorId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "investorId cannot be empty",
+          },
+          notNull: {
+            msg: "investorId cannot be empty",
+          },
+        },
+      },
+      farmId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "farmId cannot be empty",
+          },
+          notNull: {
+            msg: "farmId cannot be empty",
+          },
+        },
+      },
       description: {
         type: DataTypes.STRING,
         allowNull: false,

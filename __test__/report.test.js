@@ -36,7 +36,7 @@ beforeAll(async () => {
       balance: 1000000,
       createdAt: new Date(),
       updatedAt: new Date(),
-    }
+    },
   ]);
 
   await sequelize.queryInterface.bulkInsert("Investors", [
@@ -48,19 +48,19 @@ beforeAll(async () => {
       balance: 100000,
       createdAt: new Date(),
       updatedAt: new Date(),
-    }
+    },
   ]);
 
   farm = farm.map((el) => {
-    el.createdAt = el.updatedAt = new Date()
-    return el
-  })
+    el.createdAt = el.updatedAt = new Date();
+    return el;
+  });
   await sequelize.queryInterface.bulkInsert("Farms", farm);
 
   report = report.map((el) => {
-    el.createdAt = el.updatedAt = new Date()
-    return el
-  })
+    el.createdAt = el.updatedAt = new Date();
+    return el;
+  });
   await sequelize.queryInterface.bulkInsert("Reports", report);
 });
 
@@ -86,20 +86,16 @@ afterAll(async () => {
     restartIdentity: true,
   });
 });
-describe("Report Test", ()=>{
-
-describe("GET /reports", () => {
-
-  it("responds with status 200 when success get reports", async () => {
-    const response = await request(app).get("/reports");
-    expect(response.status).toBe(200);
-    expect(response.body).toBeInstanceOf(Object);
-    // expect(response.body[0]).toHaveProperty("reports");
-    // expect(response.body).toHaveProperty("description");
+describe("Report Test", () => {
+  describe("GET /reports", () => {
+    it("responds with status 200 when success get reports", async () => {
+      const response = await request(app).get("/reports");
+      expect(response.status).toBe(200);
+      expect(response.body).toBeInstanceOf(Object);
+      console.log(response.body);
+    });
   });
 });
-})
-
 
 describe("POST /reports", () => {
   it("responds with status 201 when success post reports", async () => {
@@ -109,11 +105,45 @@ describe("POST /reports", () => {
       description:
         "Very good service, good land to invest here or build a business",
     });
-
     expect(response.status).toBe(201);
     expect(response.body).toBeInstanceOf(Object);
     expect(response.body).toHaveProperty("message", "New description added");
+  });
 
+  it("responds with status 400 when Description is empty/null", async () => {
+    const response = await request(app).post("/reports").send({
+      investorId: 1,
+      farmId: 1,
+      description: null,
+    });
+
+    expect(response.status).toBe(400);
+    expect(response.body).toBeInstanceOf(Object);
+    expect(response.body).toHaveProperty("message", "Description cannot be empty");
+  });
+
+  it("responds with status 400 when InvestorId is empty/null", async () => {
+    const response = await request(app).post("/reports").send({
+      investorId: null,
+      farmId: 1,
+      description: "Very good service, good land to invest here or build a business",
+    });
+
+    expect(response.status).toBe(400);
+    expect(response.body).toBeInstanceOf(Object);
+    expect(response.body).toHaveProperty("message", "investorId cannot be empty");
+  });
+
+  it("responds with status 400 when FarmId is empty/null", async () => {
+    const response = await request(app).post("/reports").send({
+      investorId: 1,
+      farmId: null,
+      description: "Very good service, good land to invest here or build a business",
+    });
+
+    expect(response.status).toBe(400);
+    expect(response.body).toBeInstanceOf(Object);
+    expect(response.body).toHaveProperty("message", "farmId cannot be empty");
   });
 });
 
@@ -122,10 +152,8 @@ describe("GET /reports/:id", () => {
     const response = await request(app).get("/reports/1");
     expect(response.status).toBe(200);
     expect(response.body).toBeInstanceOf(Object);
-    // expect(response.body[0]).toHaveProperty("reports");
     expect(response.body).toHaveProperty("description");
     expect(response.body).toHaveProperty("investorId");
-
     expect(response.body).toHaveProperty("farmId");
   });
 });

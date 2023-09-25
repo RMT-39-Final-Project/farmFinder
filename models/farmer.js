@@ -30,10 +30,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         validate: {
           notEmpty: {
-            msg: "Email is required!",
+            msg: "Email is required",
           },
           notNull: {
-            msg: "Email is required!",
+            msg: "Email is required",
           },
           isEmail: {
             msg: "Email format wrong",
@@ -65,6 +65,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       status: DataTypes.STRING,
+      address: DataTypes.STRING,
       balance: DataTypes.INTEGER,
     },
     {

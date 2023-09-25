@@ -14,6 +14,9 @@ const errorHandler = (err, req, res, next) => {
   } else if (err.name === "email/password_required") {
     status = 400;
     message = "Email/Password required";
+  } else if (err.name === "JsonWebTokenError") {
+    status = 401;
+    message = "Invalid token";
   } else if (err.name === "invalid_email/password") {
     status = 400;
     message = "Email/Password invalid";
@@ -27,11 +30,14 @@ const errorHandler = (err, req, res, next) => {
     status = 400;
     message = `Farmer with id ${err.id} not found`;
   } else if (err.name === "farmer_banned") {
-    status = 400;
+    status = 403;
     message = "Your account is banned";
   } else if (err.name === "Bad request") {
     status = 400;
     message = "Description cannot be empty!";
+  } else if (err.name === "forbidden") {
+    status = 403;
+    message = `UnAuthorized`;
   } else if (err.name === "farmer_not_found") {
     status = 404;
     message = `Farmer with id ${err.id} not found`;

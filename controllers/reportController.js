@@ -14,7 +14,9 @@ class ReportController {
   static async getReportById(req, res, next) {
     try {
       const reportDetail = await Report.findByPk(req.params.id);
+
       if (!reportDetail) throw { name: "report_not_found", id: req.params.id };
+
 
       res.status(200).json(reportDetail);
     } catch (error) {

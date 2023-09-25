@@ -1,3 +1,4 @@
+
 const errorHandler = (err, req, res, next) => {
   let status = 500;
   let message = "internal server error";
@@ -17,7 +18,11 @@ const errorHandler = (err, req, res, next) => {
   } else if (err.name === "JsonWebTokenError") {
     status = 401;
     message = "Invalid token";
-  } else if (err.name === "invalid_email/password") {
+  } else if (error.name === "Bad request") {
+    status = 400;
+    message = "Description cannot be empty!";
+  }
+  else if (err.name === "invalid_email/password") {
     status = 400;
     message = "Email/Password invalid";
   } else if (err.name === "not_found") {

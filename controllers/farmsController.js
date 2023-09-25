@@ -51,6 +51,7 @@ class FarmController {
     }
   }
 
+
   static async addFarm(req, res) {
     const {
       name,
@@ -64,10 +65,11 @@ class FarmController {
       sharePercent,
       price,
     } = req.body;
-
+    console.log(req.files);
     if (!req.files || Object.keys(req.files).length === 0) {
       return res.status(400).json({ message: "No files were uploaded." });
     }
+
     const mainImgFile = req.files.photoUrl;
     const uploadPath = path.join(serverPath, mainImgFile.name);
 
@@ -139,6 +141,7 @@ class FarmController {
       await transaction.commit();
       res.status(201).json({ createdFarm });
     } catch (err) {
+      console.log(err);
       fs.unlink(uploadPath, (unlinkError) => {
         if (unlinkError) console.error(`Unable to delete file: ${uploadPath}`);
       });

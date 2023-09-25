@@ -3,6 +3,7 @@ const midtransClient = require('midtrans-client');
 const { sequelize } = require('../models');
 
 class TransactionController {
+  
   static async addTotaltransaction(req, res, next) {
     const t = await sequelize.transaction();
     try {

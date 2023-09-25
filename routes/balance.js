@@ -5,10 +5,10 @@ const balance = express.Router();
 
 balance
     .get("/", BalanceController.findAllBalance)
-    .post("/", BalanceController.createBalance)
     .use(authInvestor)
+    .post("/", BalanceController.createBalance)
     .get("/:balanceId", BalanceController.findBalance)
-    .put("/status/:balanceId", BalanceController.updateStatusBalance)
+    .put("/status/:balanceId", BalanceController.updateStatusBalance) 
     .delete("/:balanceId", BalanceController.deleteBalance)
 
     

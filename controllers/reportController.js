@@ -26,15 +26,11 @@ class ReportController {
 
   static async postReport(req, res, next) {
     try {
-      const { description } = req.body;
+      const { farmId, investorId, description } = req.body;
 
       const report = await Report.create({
-        description,
+        farmId, investorId, description,
       });
-
-      if (!description) {
-        throw { name: "Bad request" };
-      }
 
       res.status(201).json({ message: "New description added" });
     } catch (error) {

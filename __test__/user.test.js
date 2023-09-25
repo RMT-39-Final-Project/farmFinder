@@ -71,7 +71,7 @@ beforeAll(async () => {
       email: 'invest@mail.com',
       password: 'testing',
     });
-  access_token_investor = responseInvestors.body.access_token;
+  access_token_investor = responseInvestors.body.access_token; 
 });
 
 afterAll(async () => {
@@ -249,11 +249,11 @@ describe('Farmer Test', () => {
   })
 
   describe('PATCH /users/farmers/:id', () => {
-    // it('should response with status 200 when farmer id not found', async () => {
-    //   const response = (await request(app).patch('/users/farmers/1')).set()
-    //   console.log(response.body );
-    //   // expect(response.status).toBe(200);
-    //   // expect(response.body).toBeInstanceOf(Object);
-    // })
+    it('should response with status 200 when farmer id not found', async () => {
+      // const response = (await request(app).patch('/users/farmers/1')).set("access_token", access_token_farmer)
+      // console.log(response.body );
+      // expect(response.status).toBe(200);
+      // expect(response.body).toBeInstanceOf(Object);
+    })
   })
 });

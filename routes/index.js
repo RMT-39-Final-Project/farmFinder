@@ -5,6 +5,7 @@ const invest = require("./invests");
 const balance = require("./balance");
 const report = require("./reports");
 const router = express.Router();
+
 const transaction = require('../routes/transaction')
 router
     .use("/users", users)
@@ -13,5 +14,6 @@ router
     .use("/reports", report)
     .use("/invests", invest)
     .use("/transactions", transaction)
+
 
 module.exports = router;

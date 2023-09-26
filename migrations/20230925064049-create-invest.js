@@ -11,15 +11,19 @@ module.exports = {
       },
       status: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       ownership: {
         type: Sequelize.INTEGER,
+        allowNull: false,
       },
       totalPrice: {
         type: Sequelize.INTEGER,
+        allowNull: false,
       },
       farmId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
           model: "Farms",
           key: "id",
@@ -27,6 +31,7 @@ module.exports = {
       },
       investorId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
           model: "Investors",
           key: "id",

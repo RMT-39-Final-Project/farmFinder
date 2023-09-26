@@ -120,7 +120,6 @@ describe('Farmer Test', () => {
     it('should response with status 400 when password is null', async () => {
       const response = await request(app).post('/users/farmers/login').send({
         email: 'waryo@mail.com',
-        password: null,
       });
       expect(response.status).toBe(400);
       expect(response.body).toBeInstanceOf(Object);

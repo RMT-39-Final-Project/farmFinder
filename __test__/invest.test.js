@@ -3,6 +3,8 @@ const app = require("../app");
 const { sequelize } = require("../models");
 const { hash } = require("../helpers/bcrypt");
 
+let access_token_investor = "";
+
 beforeAll(async () => {
   let farm = require("../data/farm.json");
   let invest = require("../data/invest.json");
@@ -62,6 +64,15 @@ beforeAll(async () => {
     return el;
   });
   await sequelize.queryInterface.bulkInsert("Invests", invest);
+
+  const responseInvestors = await request(app)
+    .post("/users/investors/login")
+    .send({
+      email: "invest@mail.com",
+      password: "testing",
+    });
+
+  access_token_investor = responseInvestors.body.access_token;
 });
 
 afterAll(async () => {
@@ -89,21 +100,28 @@ afterAll(async () => {
 
 describe("GET /invests", () => {
   it("responds with status 200 when success get invests", async () => {
-    const response = await request(app).get("/invests");
+    const response = await request(app)
+      .get("/invests")
+      .set("access_token", access_token_investor);
     expect(response.status).toBe(200);
     expect(response.body).toBeInstanceOf(Object);
+    expect(response.body[0]).toHaveProperty("Farm");
+    expect(response.body[0].Farm).toHaveProperty("name");
   });
 });
 
 describe("POST /invests", () => {
   it("responds with status 201 when success post invests", async () => {
-    const response = await request(app).post("/invests").send({
-      status: "success",
-      ownership: 1,
-      totalPrice: 100,
-      farmId: 1,
-      investorId: 1
-    });
+    const response = await request(app)
+      .post("/invests/1")
+      .send({
+        status: "success",
+        ownership: 1,
+        totalPrice: 100,
+        farmId: 1,
+        investorId: 1,
+      })
+      .set("access_token", access_token_investor);
     expect(response.status).toBe(201);
     expect(response.body).toBeInstanceOf(Object);
     expect(response.body).toHaveProperty("status");
@@ -116,9 +134,15 @@ describe("POST /invests", () => {
 
 describe("GET /invests/:id", () => {
   it("responds with status 200 when success get invests by id", async () => {
-    const response = await request(app).get("/invests/:id");
+    const response = await request(app)
+      .get("/invests/1")
+      .set("access_token", access_token_investor);
     expect(response.status).toBe(200);
     expect(response.body).toBeInstanceOf(Object);
-    expect(response.body).toHaveProperty("invests");
+    expect(response.body).toHaveProperty("status");
+    expect(response.body).toHaveProperty("ownership");
+    expect(response.body).toHaveProperty("totalPrice");
+    expect(response.body).toHaveProperty("farmId");
+    expect(response.body).toHaveProperty("investorId");
   });
 });

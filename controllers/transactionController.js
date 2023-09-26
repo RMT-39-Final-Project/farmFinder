@@ -23,9 +23,9 @@ class TransactionController {
           { transaction: t }
         );
 
-        if (!data[0]) {
-          return res.status(200).json({ message: 'no data updated' });
-        } else {
+        // if (!data[0]) {
+        //   return res.status(200).json({ message: 'no data updated' });
+        // } else {
           const dataUpdated = await Investor.findOne({
             where: { id: req.params.investorId },
             attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
@@ -44,15 +44,18 @@ class TransactionController {
             .status(200)
             .json({ message: 'success added balance', data: dataUpdated });
         }
-      }
+      // }
     } catch (error) {
-      await t.rollback();
+      const rollback = await t.rollback();
+      console.log(rollback);
       const data = await Investor.findByPk(req.params.investorId);
-      await Balance.create({
-        userId: req.params.investorId,
-        balance: data.balance,
-        status: 'failed',
-      });
+      if(error.name !== "not_found"){
+        await Balance.create({
+          userId: req.params.investorId,
+          balance: data.balance,
+          status: 'failed',
+        });
+      }
       next(error);
     }
   }
@@ -67,12 +70,14 @@ class TransactionController {
       }
 
       const dataFind = await Investor.findByPk(req.params.investorId);
-      if (dataFind.balance <= 0) {
-        throw { name: 'not_enough' };
-      }
+
       if (!dataFind) {
         throw { name: 'not_found' };
-      } else {
+      } 
+      else {
+        if (dataFind.balance <= 0 || dataFind.balance < balance) {
+          throw { name: 'not_enough' };
+        } 
         await Investor.increment(
           { balance: -balance },
           { where: { id: dataFind.id } },
@@ -89,7 +94,7 @@ class TransactionController {
         await Balance.create(
           {
             userId: req.params.investorId,
-            balance: dataUpdated.balance,
+            balance: dataUpdated?.balance,
             status: 'success',
           },
           { transaction: t }
@@ -100,14 +105,16 @@ class TransactionController {
           .json({ message: 'success sended balance', data: dataUpdated });
       }
     } catch (error) {
-      await t.rollback();
+      const rollback = await t.rollback();
+      console.log(rollback);
       const dataFind = await Investor.findByPk(req.params.investorId);
-      await Balance.create({
-        userId: req.params.investorId, //! note
-        balance: dataFind.balance,
-        status: 'failed',
-      });
+      
       if (error.name === 'not_enough') {
+        await Balance.create({
+          userId: req.params.investorId, //! note
+          balance: dataFind.balance,
+          status: 'failed',
+        });
         return res.status(400).json({ message: 'balance is not enough' });
       } else {
         next(error);

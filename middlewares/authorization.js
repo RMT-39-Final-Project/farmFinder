@@ -1,4 +1,4 @@
-const {Farm} = require('../models')
+const { Farm } = require('../models')
 
 async function authorizeDeleteFarm(req, res, next) {
   const { farmId } = req.params;

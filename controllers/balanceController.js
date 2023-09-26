@@ -62,15 +62,15 @@ class BalanceController {
           { status: req.body.status },
           { where: { id: dataFind.id } }
         );
-        if (!data[0]) {
-          return res.status(200).json({ message: 'no data updated' });
-        } else {
+        // if (!data[0]) {
+        //   return res.status(200).json({ message: 'no data updated' });
+        // } else {
           const dataUpdated = await Balance.findOne({
             where: { id: req.params.balanceId },
             attributes: { exclude: ['createdAt', 'updatedAt'] },
           });
           return res.status(200).json(dataUpdated);
-        }
+        // }
       }
     } catch (error) {
       next(error);
@@ -87,14 +87,14 @@ class BalanceController {
         throw { name: 'not_found' };
       } else {
         const data = await Balance.destroy({ where: { id: dataFind.id } });
-        if (!data) {
-          return res.status(200).json({ message: 'deleting failed' });
-        } else {
+        // if (!data) {
+          // return res.status(200).json({ message: 'deleting failed' });
+        // } else {
           return res.status(200).json({
             message: 'deleted balance success',
             data: dataFind,
           });
-        }
+        // }
       }
     } catch (error) {
       next(error);

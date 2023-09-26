@@ -51,9 +51,9 @@ class BalanceController {
   }
   static async updateStatusBalance(req, res, next) {
     try {
-      if (!req.body.status) {
-        return res.status(400).json({ message: "status is required" });
-      }
+      // if (!req.body.status) {
+      //   return res.status(400).json({ message: "status is required" });
+      // }
       const dataFind = await Balance.findByPk(req.params.balanceId);
       if (!dataFind) {
         throw { name: "not_found" };

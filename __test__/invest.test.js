@@ -108,6 +108,15 @@ describe("GET /invests", () => {
     expect(response.body[0]).toHaveProperty("Farm");
     expect(response.body[0].Farm).toHaveProperty("name");
   });
+
+  it('should response with status 401 when invalid token', async () => {
+    const response = await request(app)
+      .post('/invests')
+      .set('access_token', access_token_investor + '1');
+    expect(response.status).toBe(401);
+    expect(response.body).toBeInstanceOf(Object);
+    expect(response.body).toHaveProperty('message', 'Invalid token');
+  });
 });
 
 describe("POST /invests", () => {
@@ -130,6 +139,81 @@ describe("POST /invests", () => {
     expect(response.body).toHaveProperty("farmId");
     expect(response.body).toHaveProperty("investorId");
   });
+
+  it('responds with status 400 when ownership is required/null', async () => {
+    const response = await request(app)
+      .post('/invests/1')
+      .send({
+        status: "success",
+        ownership: null,
+        totalPrice: 100,
+        farmId: 1,
+        investorId: 1,
+      })
+      .set('access_token', access_token_investor);
+    expect(response.status).toBe(400);
+    expect(response.body).toBeInstanceOf(Object);
+    expect(response.body).toHaveProperty('message', 'Ownership cannot be empty');
+  });
+
+  it('responds with status 400 when totalPrice is required/null', async () => {
+    const response = await request(app)
+      .post('/invests/1')
+      .send({
+        status: "success",
+        ownership: 1,
+        totalPrice: null,
+        farmId: 1,
+        investorId: 1,
+      })
+      .set('access_token', access_token_investor);
+    expect(response.status).toBe(400);
+    expect(response.body).toBeInstanceOf(Object);
+    expect(response.body).toHaveProperty('message', 'TotalPrice cannot be empty');
+  });
+
+  it('responds with status 400 when invest is failed', async () => {
+    const response = await request(app)
+      .post('/invests/1')
+      .send({
+        status: "failed",
+        ownership: 1,
+        farmId: 1,
+        investorId: 1,
+      })
+      .set('access_token', access_token_investor);
+    expect(response.status).toBe(400);
+    expect(response.body).toBeInstanceOf(Object);
+    expect(response.body).toHaveProperty("status");
+    expect(response.body).toHaveProperty("ownership");
+    expect(response.body).toHaveProperty("farmId");
+    expect(response.body).toHaveProperty("investorId");
+  });
+
+  it('responds with status 400 when farmId is required/null', async () => {
+    const response = await request(app)
+      .post('/invests/1')
+      .send({
+        status: "success",
+        ownership: 1,
+        totalPrice: 100,
+        farmId: null,
+        investorId: 1,
+      })
+      .set('access_token', access_token_investor);
+    expect(response.status).toBe(400);
+    expect(response.body).toBeInstanceOf(Object);
+    expect(response.body).toHaveProperty('message', 'farmId cannot be empty');
+  });
+
+  it('should response with status 401 when invalid token', async () => {
+    const response = await request(app)
+      .post('/invests')
+      .set('access_token', access_token_investor + '1');
+    expect(response.status).toBe(401);
+    expect(response.body).toBeInstanceOf(Object);
+    expect(response.body).toHaveProperty('message', 'Invalid token');
+  });
 });
 
 describe("GET /invests/:id", () => {
@@ -144,5 +228,23 @@ describe("GET /invests/:id", () => {
     expect(response.body).toHaveProperty("totalPrice");
     expect(response.body).toHaveProperty("farmId");
     expect(response.body).toHaveProperty("investorId");
+  });
+
+  it("responds with status 404 when id not found", async () => {
+    const response = await request(app)
+      .get("/invests/99")
+      .set("access_token", access_token_investor);
+    expect(response.status).toBe(404);
+    expect(response.body).toBeInstanceOf(Object);
+    expect(response.body).toHaveProperty('message', 'report with id 99 not found');
+  });
+
+  it('should response with status 401 when invalid token', async () => {
+    const response = await request(app)
+      .post('/invests')
+      .set('access_token', access_token_investor + '1');
+    expect(response.status).toBe(401);
+    expect(response.body).toBeInstanceOf(Object);
+    expect(response.body).toHaveProperty('message', 'Invalid token');
   });
 });

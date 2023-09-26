@@ -49,17 +49,25 @@ class InvestController {
         });
         res.status(201).json(data);
       } else {
-        throw { name: "failed" };
+        throw {
+          name: "failed",
+          status: "failed",
+          ownership,
+          totalPrice,
+          farmId,
+          investorId: req.investor.id,
+        };
       }
     } catch (error) {
       if (error.name === "failed") {
         const data = {
           status: "failed",
-          ownership,
-          totalPrice,
-          farmId,
+          ownership: error.ownership,
+          totalPrice: error.totalPrice,
+          farmId: error.farmId,
+          investorId: req.investor.id,
         };
-        return res.status(201).json(data);
+        return res.status(400).json(data);
       } else {
         next(error);
       }

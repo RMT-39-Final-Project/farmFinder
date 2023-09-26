@@ -11,12 +11,15 @@ module.exports = {
       },
       status: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       ownership: {
         type: Sequelize.INTEGER,
+        allowNull: false,
       },
       totalPrice: {
         type: Sequelize.INTEGER,
+        allowNull: false,
       },
       farmId: {
         type: Sequelize.INTEGER,

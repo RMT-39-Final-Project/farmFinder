@@ -9,7 +9,18 @@ module.exports = (sequelize, DataTypes) => {
   }
   Invest.init(
     {
-      status: DataTypes.STRING,
+      status: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Status cannot be empty",
+          },
+          notNull: {
+            msg: "Status cannot be empty",
+          },
+        },
+      },
       ownership: {
         type: DataTypes.INTEGER,
         allowNull: false,

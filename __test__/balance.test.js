@@ -53,8 +53,9 @@ afterAll(async () => {
 
 describe('GET /balances', () => {
   it('responds with status 200 when success get all balances', async () => {
-    const response = await request(app).get('/balances');
-    expect(response.status).toBe(200);
+    const response = await request(app).get('/balances')
+    .set('access_token', access_token_investor);
+    expect(response.status).toBe(200)
     expect(response.body).toBeInstanceOf(Object);
     expect(response.body[0]).toHaveProperty('userId');
     expect(response.body[0]).toHaveProperty('balance');

@@ -4,8 +4,8 @@ const { authInvestor } = require("../middlewares/auth");
 const balance = express.Router();
 
 balance
-    .get("/", BalanceController.findAllBalance)
     .use(authInvestor)
+    .get("/", BalanceController.findAllBalance)
     .post("/", BalanceController.createBalance)
     .get("/:balanceId", BalanceController.findBalance)
     .put("/status/:balanceId", BalanceController.updateStatusBalance) 

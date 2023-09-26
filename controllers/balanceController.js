@@ -5,6 +5,7 @@ class BalanceController {
   static async findAllBalance(req, res, next) {
     try {
       const data = await Balance.findAll({
+        where: {userId: req.investor.id},
         attributes: { exclude: ['createdAt', 'updatedAt'] },
         include: {
           model: Investor,

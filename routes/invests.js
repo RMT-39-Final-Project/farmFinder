@@ -4,8 +4,8 @@ const { authInvestor } = require("../middlewares/auth");
 const invest = express.Router();
 
 invest
-  .get("/", InvestController.getInvest)
   .use(authInvestor)
+  .get("/", InvestController.getInvest)
   .post("/:id", InvestController.postInvest)
   .get("/:id", InvestController.getInvestById);
 

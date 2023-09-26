@@ -1,9 +1,18 @@
-const { Invest, Investor } = require("../models");
+const { Invest, Investor, Farm } = require("../models");
 
 class InvestController {
   static async getInvest(req, res, next) {
     try {
-      const invest = await Invest.findAll();
+      const invest = await Invest.findAll({
+        where: { investorId: req.investor.id },
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+        include: [
+          {
+            model: Farm,
+            attributes: ["name"],
+          },
+        ],
+      });
 
       res.status(200).json(invest);
     } catch (error) {
@@ -36,7 +45,7 @@ class InvestController {
           ownership,
           totalPrice,
           farmId,
-          investorId: req.investor.id
+          investorId: req.investor.id,
         });
         res.status(201).json(data);
       } else {

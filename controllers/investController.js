@@ -26,27 +26,34 @@ class InvestController {
 
   static async postInvest(req, res, next) {
     try {
-      let { ownership, totalPrice } = req.body;
+      let { ownership, totalPrice, farmId } = req.body;
 
-      const { balance } = await Investor.findByPk(req.investor.id);
+      const { balance } = await Investor.findByPk(req.params.id);
 
       if (balance >= req.body.totalPrice) {
         const data = await Invest.create({
           status: "success",
           ownership,
           totalPrice,
+          farmId,
+          investorId: req.investor.id
         });
         res.status(201).json(data);
       } else {
-        const data = await Invest.create({
+        throw { name: "failed" };
+      }
+    } catch (error) {
+      if (error.name === "failed") {
+        const data = {
           status: "failed",
           ownership,
           totalPrice,
-        });
-        res.status(201).json(data);
+          farmId,
+        };
+        return res.status(201).json(data);
+      } else {
+        next(error);
       }
-    } catch (error) {
-      next(error);
     }
   }
 }

@@ -20,6 +20,7 @@ module.exports = {
       },
       farmId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
           model: "Farms",
           key: "id",
@@ -27,6 +28,7 @@ module.exports = {
       },
       investorId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
           model: "Investors",
           key: "id",

@@ -1,4 +1,5 @@
-const { Invest, Investor, Farm } = require("../models");
+const { Invest, Investor, Farm, sequelize } = require("../models");
+const { QueryTypes } = require("sequelize");
 
 class InvestController {
   static async getInvest(req, res, next) {
@@ -77,24 +78,41 @@ class InvestController {
   static async getInvestByFarmId(req, res, next) {
     try {
       const { farmId } = req.params;
-      const invests = await Invest.findAll({
-        where: {
-          farmId: farmId,
-        },
-        include: [
-          {
-            model: Investor,
-            attributes: { exclude: ["createdAt", "updatedAt", "password"] },
-          },
-        ],
-        attributes: { exclude: ["createdAt", "updatedAt"] },
-        order: [["createdAt", "ASC"]],
-      });
-      if (!invests) throw { name: "InvalidFarmId" };
-      if (invests) {
-        res.status(200).json(invests);
-      }
+
+      const sql = `
+      SELECT "Invests"."investorId", "Investors".username, "Investors".email, SUM(ownership) AS "totalOwnership" FROM "Invests"
+        JOIN "Investors"  ON "Investors".id = "Invests"."investorId"
+        WHERE "farmId" = ${farmId} AND "status" = 'success'
+        GROUP BY "Invests"."investorId", "Investors".id
+      `;
+      const invests = await sequelize.query(sql, { type: QueryTypes.SELECT });
+      // const invests = await Invest.findAll({
+      //   where: {
+      //     farmId: farmId,
+      //   },
+      //   include: [
+      //     {
+      //       model: Investor,
+      //       attributes: { exclude: ["createdAt", "updatedAt", "password"] },
+      //     },
+      //   ],
+      //   attributes: [
+      //     // exclude: ["createdAt", "updatedAt"],
+      //     // include: [
+      //     // "id",
+      //     // "status",
+      //     [sequelize.fn("SUM", sequelize.col("ownership")), "totalOwnership"],
+      //     // ],
+      //   ],
+      //   // order: [["createdAt", "ASC"]],
+      //   group: ["Investor.id", "Invest.id"],
+      // });
+      // if (!invests) throw { name: "InvalidFarmId" };
+      // if (invests) {
+      // }
+      res.status(200).json(invests);
     } catch (err) {
+      console.log(err);
       next(err);
     }
   }

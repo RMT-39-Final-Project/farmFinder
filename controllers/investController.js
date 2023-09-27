@@ -73,6 +73,31 @@ class InvestController {
       }
     }
   }
+
+  static async getInvestByFarmId(req, res, next) {
+    try {
+      const { farmId } = req.params;
+      const invests = await Invest.findAll({
+        where: {
+          farmId: farmId,
+        },
+        include: [
+          {
+            model: Investor,
+            attributes: { exclude: ["createdAt", "updatedAt", "password"] },
+          },
+        ],
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+        order: [["createdAt", "ASC"]],
+      });
+      if (!invests) throw { name: "InvalidFarmId" };
+      if (invests) {
+        res.status(200).json(invests);
+      }
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 module.exports = InvestController;

@@ -32,9 +32,9 @@ class FarmController {
       });
   
       if (farms) {
-        res.status(200).json(
+        res.status(200).json({
           farms,
-        );
+        });
       }
     } catch (err) {
       next(err);

@@ -72,6 +72,7 @@ class UserController {
           email: data.email,
           phoneNumber: data.phoneNumber,
           address: data.address,
+          balance: data.balance
         });
     } catch (err) {
       next(err);

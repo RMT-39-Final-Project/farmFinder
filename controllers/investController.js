@@ -85,34 +85,10 @@ class InvestController {
         WHERE "farmId" = ${farmId} AND "status" = 'success'
         GROUP BY "Invests"."investorId", "Investors".id
       `;
+
       const invests = await sequelize.query(sql, { type: QueryTypes.SELECT });
-      // const invests = await Invest.findAll({
-      //   where: {
-      //     farmId: farmId,
-      //   },
-      //   include: [
-      //     {
-      //       model: Investor,
-      //       attributes: { exclude: ["createdAt", "updatedAt", "password"] },
-      //     },
-      //   ],
-      //   attributes: [
-      //     // exclude: ["createdAt", "updatedAt"],
-      //     // include: [
-      //     // "id",
-      //     // "status",
-      //     [sequelize.fn("SUM", sequelize.col("ownership")), "totalOwnership"],
-      //     // ],
-      //   ],
-      //   // order: [["createdAt", "ASC"]],
-      //   group: ["Investor.id", "Invest.id"],
-      // });
-      // if (!invests) throw { name: "InvalidFarmId" };
-      // if (invests) {
-      // }
       res.status(200).json(invests);
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }

@@ -9,7 +9,7 @@ class UserController {
       });
       res.status(200).json(data);
     } catch (err) {
-      next(err);
+      // next(err);
     }
   }
   static async findOneInvestor(req, res, next) {

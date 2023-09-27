@@ -139,6 +139,27 @@ describe('Farms Test', () => {
       expect(response.body[0]).toHaveProperty('Images');
     });
   });
+  describe('GET /farms/my-farms/farms', () => {
+    it('should response white status 200 when success', async () => {
+      const response = await request(app).get('/farms/my-farms/farms');
+
+      expect(response.status).toBe(200);
+      expect(response.body).toBeInstanceOf(Array);
+      expect(response.body[0]).toHaveProperty('id');
+      expect(response.body[0]).toHaveProperty('name');
+      expect(response.body[0]).toHaveProperty('city');
+      expect(response.body[0]).toHaveProperty('address');
+      expect(response.body[0]).toHaveProperty('longitude');
+      expect(response.body[0]).toHaveProperty('latitude');
+      expect(response.body[0]).toHaveProperty('mainImgUrl');
+      expect(response.body[0]).toHaveProperty('status', 'verified');
+      expect(response.body[0]).toHaveProperty('benefits');
+      expect(response.body[0]).toHaveProperty('sharePercent');
+      expect(response.body[0]).toHaveProperty('price');
+      expect(response.body[0]).toHaveProperty('FarmerId', farmerId);
+      expect(response.body[0]).toHaveProperty('Images');
+    });
+  });
 
   describe('GET /farms/:farmId', () => {
     it('should response white status 200 when success', async () => {

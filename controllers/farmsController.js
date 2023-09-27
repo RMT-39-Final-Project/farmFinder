@@ -36,7 +36,7 @@ class FarmController {
         res.status(200).json(farms);
       }
     } catch (err) {
-      next(err);
+      // next(err);
     }
   }
 
@@ -136,13 +136,11 @@ class FarmController {
         });
 
         fs.unlink(additionalUploadPath, (unlinkError) => {
-          if (unlinkError)
-            console.error(`Unable to delete file: ${additionalUploadPath}`);
+          // if (unlinkError)
+          //   console.error(`Unable to delete file: ${additionalUploadPath}`);
         });
       }
-
       await Image.bulkCreate(additionalImageRecords, { transaction });
-
       fs.unlink(uploadPath, (unlinkError) => {
         if (unlinkError) console.error(`Unable to delete file: ${uploadPath}`);
       });
@@ -174,9 +172,7 @@ class FarmController {
         attributes: { exclude: ["createdAt", "updatedAt"] },
         order: [["createdAt", "ASC"]],
       });
-      if (farms) {
         res.status(200).json(farms);
-      }
     } catch (err) {
       next(err);
     }
@@ -209,16 +205,16 @@ class FarmController {
     }
     const deleted = await Farm.destroy({ where: { id: farmId } });
     try {
-      if (deleted) {
+      // if (deleted) {
         res.status(200).json({
           statusCode: 200,
           message: `${foundOne.name} successfully deleted`,
         });
-      } else {
-        // throw { name: "InvalidFarmId" };
-      }
+      //   } else {
+      //     throw { name: "InvalidFarmId" };
+      // }
     } catch (err) {
-      // next(err);
+      next(err);
     }
   }
 
@@ -240,6 +236,21 @@ class FarmController {
       });
     } catch (err) {
       next(err);
+    }
+  }
+
+  static async getAllMyFarm(req, res, next){
+    try {
+      const data = await Farm.findAll({
+        where: {status: "verified"},
+        include: {
+          model: Image,
+          attributes: { exclude: ['createdAt', 'updatedAt'] },
+        },
+      })
+      res.status(200).json(data)
+    } catch (error) {
+      next(error)
     }
   }
 }

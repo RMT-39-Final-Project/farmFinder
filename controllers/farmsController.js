@@ -3,14 +3,25 @@ const { Farm, Image, sequelize } = require("../models");
 const fs = require("fs");
 const path = require("path");
 const serverPath = path.join(__dirname, "..", "uploads");
+const { Op } = require("sequelize");
 
 class FarmController {
   static async getAllFarms(req, res, next) {
     try {
+      let where = {
+        status: "verified",
+      };
+
+      if (req.query.city) {
+        where.city = { [Op.iLike]: `%${req.query.city}%` };
+      }
+
+      if (req.query.category) {
+        where.category = { [Op.iLike]: `%${req.query.category}%` };
+      }
+
       const farms = await Farm.findAll({
-        where: {
-          status: "verified",
-        },
+        where: where,
         include: [
           {
             model: Image,
@@ -20,10 +31,9 @@ class FarmController {
         attributes: { exclude: ["createdAt", "updatedAt"] },
         order: [["createdAt", "ASC"]],
       });
+
       if (farms) {
-        res.status(200).json(
-          farms,
-        );
+        res.status(200).json(farms);
       }
     } catch (err) {
       next(err);
@@ -51,8 +61,7 @@ class FarmController {
     }
   }
 
-
-  static async addFarm(req, res) {
+  static async addFarm(req, res, next) {
     const {
       name,
       category,
@@ -65,7 +74,6 @@ class FarmController {
       sharePercent,
       price,
     } = req.body;
-    console.log(req.files);
     if (!req.files || Object.keys(req.files).length === 0) {
       return res.status(400).json({ message: "No files were uploaded." });
     }
@@ -77,6 +85,7 @@ class FarmController {
 
     try {
       await mainImgFile.mv(uploadPath);
+
       const uploadedMainImage = await imagekit.upload({
         file: fs.readFileSync(uploadPath),
         fileName: mainImgFile.name,
@@ -97,7 +106,7 @@ class FarmController {
           benefits,
           sharePercent,
           price,
-          FarmerId: req.farmer.id
+          FarmerId: req.farmer.id,
         },
         { transaction }
       );
@@ -139,28 +148,14 @@ class FarmController {
       });
 
       await transaction.commit();
-      res.status(201).json({ createdFarm });
+      res.status(201).json(createdFarm);
     } catch (err) {
-      console.log(err);
+      await transaction.rollback();
       fs.unlink(uploadPath, (unlinkError) => {
         if (unlinkError) console.error(`Unable to delete file: ${uploadPath}`);
       });
 
-      if (transaction) {
-        await transaction.rollback();
-      }
-      if (
-        err.name === "SequelizeValidationError" ||
-        err.name === "SequelizeUniqueConstraintError"
-      ) {
-        res.status(400).json({
-          message: err.errors[0].message,
-        });
-      } else {
-        res.status(500).json({
-          message: "Internal server error",
-        });
-      }
+      next(err);
     }
   }
 
@@ -168,7 +163,7 @@ class FarmController {
     try {
       const farms = await Farm.findAll({
         where: {
-          FarmerId: req.farmer.id
+          FarmerId: req.farmer.id,
         },
         include: [
           {
@@ -180,9 +175,7 @@ class FarmController {
         order: [["createdAt", "ASC"]],
       });
       if (farms) {
-        res.status(200).json(
-          farms,
-        );
+        res.status(200).json(farms);
       }
     } catch (err) {
       next(err);
@@ -201,9 +194,7 @@ class FarmController {
           id: farmId,
         },
       });
-
       if (!farm) throw { name: "InvalidFarmId" };
-
       res.status(200).json(farm);
     } catch (err) {
       next(err);
@@ -224,10 +215,10 @@ class FarmController {
           message: `${foundOne.name} successfully deleted`,
         });
       } else {
-        throw { name: "InvalidFarmId" };
+        // throw { name: "InvalidFarmId" };
       }
     } catch (err) {
-      next(err);
+      // next(err);
     }
   }
 
@@ -237,18 +228,13 @@ class FarmController {
       const { status } = req.body;
 
       if (!["unverified", "verified", "sold"].includes(status)) {
-        return res.status(400).json({ message: "Invalid status value." });
+        return res.status(400).json({ message: "Invalid status value" });
       }
 
       const updatedFarm = await Farm.update(
         { status: status },
         { where: { id: farmId } }
       );
-
-      if (updatedFarm[0] === 0) {
-        throw { name: "InvalidFarmId" };
-      }
-
       res.status(200).json({
         message: `Farm with id: ${farmId} status updated to ${status}`,
       });

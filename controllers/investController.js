@@ -1,4 +1,5 @@
-const { Invest, Investor, Farm } = require("../models");
+const { Invest, Investor, Farm, sequelize } = require("../models");
+const { QueryTypes } = require("sequelize");
 
 class InvestController {
   static async getInvest(req, res, next) {
@@ -67,10 +68,29 @@ class InvestController {
           farmId: error.farmId,
           investorId: req.investor.id,
         };
+        await Invest.create(data);
         return res.status(400).json(data);
       } else {
         next(error);
       }
+    }
+  }
+
+  static async getInvestByFarmId(req, res, next) {
+    try {
+      const { farmId } = req.params;
+
+      const sql = `
+      SELECT "Invests"."investorId", "Investors".username, "Investors".email, SUM(ownership) AS "totalOwnership" FROM "Invests"
+        JOIN "Investors"  ON "Investors".id = "Invests"."investorId"
+        WHERE "farmId" = ${farmId} AND "status" = 'success'
+        GROUP BY "Invests"."investorId", "Investors".id
+      `;
+
+      const invests = await sequelize.query(sql, { type: QueryTypes.SELECT });
+      res.status(200).json(invests);
+    } catch (err) {
+      next(err);
     }
   }
 }

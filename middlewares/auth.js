@@ -7,12 +7,12 @@ exports.authInvestor = async (req, res, next) => {
     } else {
       const payload = verify(req.headers.access_token);
       const investor = await Investor.findByPk(payload.id);
-      if (!investor) {
-        throw { name: "JsonWebTokenError" };
-      } else {
+      // if (!investor) {
+      //   throw { name: "JsonWebTokenError" };
+      // } else {
         req.investor = investor;
         next();
-      }
+      // }
     }
   } catch (error) {
     next(error);

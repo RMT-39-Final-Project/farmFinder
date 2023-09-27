@@ -248,3 +248,16 @@ describe("GET /invests/:id", () => {
     expect(response.body).toHaveProperty('message', 'Invalid token');
   });
 });
+
+describe("GET /invests/farms/:farmId", () => {
+  it("responds with status 200 when success get invests by farm id", async () => {
+    const response = await request(app)
+      .get("/invests/farms/1")
+    expect(response.status).toBe(200);
+    expect(response.body).toBeInstanceOf(Object);
+    expect(response.body[0]).toHaveProperty("investorId");
+    expect(response.body[0]).toHaveProperty("username");
+    expect(response.body[0]).toHaveProperty("email");
+    expect(response.body[0]).toHaveProperty("totalOwnership");
+  });
+});

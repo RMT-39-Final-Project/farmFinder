@@ -156,9 +156,9 @@ describe("GET /reports/:id", () => {
     expect(response.body).toHaveProperty("farmId");
   });
   it("responds with status 404 when not found get reports by id", async () => {
-    const response = await request(app).get("/reports/10000");
+    const response = await request(app).get("/reports/20");
     expect(response.status).toBe(404);
     expect(response.body).toBeInstanceOf(Object);
-    expect(response.body).toHaveProperty("message", 'report with id 10000 not found' );
+    expect(response.body).toHaveProperty("message", 'report with id 20 not found' );
   });
 });

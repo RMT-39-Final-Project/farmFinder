@@ -5,6 +5,7 @@ const { authFarmer } = require('../middlewares/auth');
 const farm = express.Router();
 
 farm
+
   .get('/', FarmController.getAllFarms)
   .get('/:farmId', FarmController.getFarmById)
   .use(authFarmer)

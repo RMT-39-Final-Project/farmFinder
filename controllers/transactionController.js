@@ -32,7 +32,7 @@ class TransactionController {
         await Balance.create(
           {
             userId: req.params.investorId,
-            balance: dataUpdated.balance,
+            balance: balance,
             status: "success",
           },
           { transaction: t }
@@ -74,7 +74,7 @@ class TransactionController {
         throw { name: "not_found" };
       } else {
         if (dataFind.balance <= 0 || dataFind.balance < balance) {
-          throw { name: "not_enough" };
+          throw { name: "not_enough", balance };
         }
         await Investor.increment(
           { balance: -balance },
@@ -110,7 +110,7 @@ class TransactionController {
       if (error.name === "not_enough") {
         await Balance.create({
           userId: req.params.investorId, //! note
-          balance: dataFind.balance,
+          balance: error.balance,
           status: "failed",
         });
         return res.status(400).json({ message: "balance is not enough" });

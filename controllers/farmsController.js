@@ -1,8 +1,9 @@
-const imagekit = require('../config/imagekitConfig');
-const { Farm, Image, sequelize } = require('../models');
-const fs = require('fs');
-const path = require('path');
-const serverPath = path.join(__dirname, '..', 'uploads');
+const imagekit = require("../config/imagekitConfig");
+const { Farm, Image, sequelize } = require("../models");
+const fs = require("fs");
+const path = require("path");
+const serverPath = path.join(__dirname, "..", "uploads");
+const { Op } = require("sequelize");
 
 class FarmController {
   static async getAllFarms(req, res, next) {
@@ -10,15 +11,15 @@ class FarmController {
       let where = {
         status: "verified",
       };
-  
-      // if (req.query.city) {
-      //   where.city = req.query.city;
-      // }
-  
-      // if (req.query.category) {
-      //   where.category = req.query.category;
-      // }
-  
+
+      if (req.query.city) {
+        where.city = { [Op.iLike]: `%${req.query.city}%` };
+      }
+
+      if (req.query.category) {
+        where.category = { [Op.iLike]: `%${req.query.category}%` };
+      }
+
       const farms = await Farm.findAll({
         where: where,
         include: [
@@ -30,11 +31,9 @@ class FarmController {
         attributes: { exclude: ["createdAt", "updatedAt"] },
         order: [["createdAt", "ASC"]],
       });
-  
+
       if (farms) {
-        res.status(200).json(
-          farms,
-        );
+        res.status(200).json(farms);
       }
     } catch (err) {
       next(err);
@@ -47,14 +46,14 @@ class FarmController {
       const farm = await Farm.findOne({
         include: {
           model: Image,
-          attributes: { exclude: ['createdAt', 'updatedAt'] },
+          attributes: { exclude: ["createdAt", "updatedAt"] },
         },
         where: {
           id: farmId,
         },
       });
 
-      if (!farm) throw { name: 'InvalidFarmId' };
+      if (!farm) throw { name: "InvalidFarmId" };
 
       res.status(200).json(farm);
     } catch (error) {
@@ -76,7 +75,7 @@ class FarmController {
       price,
     } = req.body;
     if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(400).json({ message: 'No files were uploaded.' });
+      return res.status(400).json({ message: "No files were uploaded." });
     }
 
     const mainImgFile = req.files.photoUrl;
@@ -169,11 +168,11 @@ class FarmController {
         include: [
           {
             model: Image,
-            attributes: { exclude: ['createdAt', 'updatedAt'] },
+            attributes: { exclude: ["createdAt", "updatedAt"] },
           },
         ],
-        attributes: { exclude: ['createdAt', 'updatedAt'] },
-        order: [['createdAt', 'ASC']],
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+        order: [["createdAt", "ASC"]],
       });
       if (farms) {
         res.status(200).json(farms);
@@ -189,13 +188,13 @@ class FarmController {
       const farm = await Farm.findOne({
         include: {
           model: Image,
-          attributes: { exclude: ['createdAt', 'updatedAt'] },
+          attributes: { exclude: ["createdAt", "updatedAt"] },
         },
         where: {
           id: farmId,
         },
       });
-      if (!farm) throw { name: 'InvalidFarmId' };
+      if (!farm) throw { name: "InvalidFarmId" };
       res.status(200).json(farm);
     } catch (err) {
       next(err);
@@ -206,7 +205,7 @@ class FarmController {
     const { farmId } = req.params;
     const foundOne = await Farm.findOne({ where: { id: farmId } });
     if (!foundOne) {
-      throw { name: 'InvalidFarmId' };
+      throw { name: "InvalidFarmId" };
     }
     const deleted = await Farm.destroy({ where: { id: farmId } });
     try {
@@ -215,8 +214,8 @@ class FarmController {
           statusCode: 200,
           message: `${foundOne.name} successfully deleted`,
         });
-        } else {
-          // throw { name: "InvalidFarmId" };
+      } else {
+        // throw { name: "InvalidFarmId" };
       }
     } catch (err) {
       // next(err);
@@ -228,8 +227,8 @@ class FarmController {
       const { farmId } = req.params;
       const { status } = req.body;
 
-      if (!['unverified', 'verified', 'sold'].includes(status)) {
-        return res.status(400).json({ message: 'Invalid status value' });
+      if (!["unverified", "verified", "sold"].includes(status)) {
+        return res.status(400).json({ message: "Invalid status value" });
       }
 
       const updatedFarm = await Farm.update(

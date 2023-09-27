@@ -68,6 +68,7 @@ class InvestController {
           farmId: error.farmId,
           investorId: req.investor.id,
         };
+        await Invest.create(data);
         return res.status(400).json(data);
       } else {
         next(error);

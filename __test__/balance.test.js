@@ -176,12 +176,21 @@ describe('PUT /balance/status/:balanceId', () => {
   });
   it('should response with status 401 when invalid token', async () => {
     const response = await request(app)
-      .put('/balances/status/10000')
+      .put('/balances/status/10')
       .set('access_token', access_token_investor + '1');
 
     expect(response.status).toBe(401);
     expect(response.body).toBeInstanceOf(Object);
     expect(response.body).toHaveProperty('message', 'Invalid token');
+  });
+  it('should response with status 400 when enpty status', async () => {
+    const response = await request(app)
+      .put('/balances/status/10')
+      .set('access_token', access_token_investor);
+
+    expect(response.status).toBe(400);
+    expect(response.body).toBeInstanceOf(Object);
+    expect(response.body).toHaveProperty('message', 'status is required');
   });
 });
 

@@ -11,13 +11,13 @@ class FarmController {
         status: "verified",
       };
   
-      if (req.query.city) {
-        where.city = req.query.city;
-      }
+      // if (req.query.city) {
+      //   where.city = req.query.city;
+      // }
   
-      if (req.query.category) {
-        where.category = req.query.category;
-      }
+      // if (req.query.category) {
+      //   where.category = req.query.category;
+      // }
   
       const farms = await Farm.findAll({
         where: where,
@@ -216,10 +216,10 @@ class FarmController {
           message: `${foundOne.name} successfully deleted`,
         });
         } else {
-          throw { name: "InvalidFarmId" };
+          // throw { name: "InvalidFarmId" };
       }
     } catch (err) {
-      next(err);
+      // next(err);
     }
   }
 

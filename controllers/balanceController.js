@@ -13,7 +13,7 @@ class BalanceController {
       });
       res.status(200).json(data);
     } catch (error) {
-      next(error);
+      // next(error);
     }
   }
   static async findBalance(req, res, next) {

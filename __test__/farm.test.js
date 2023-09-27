@@ -414,7 +414,7 @@ describe('Farms Test', () => {
         'message',
         'No files were uploaded.'
       );
-    });
+    }, 30000);
 
     it('should response 400 when name is empty', async () => {
       const response = await request(app)

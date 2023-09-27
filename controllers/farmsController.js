@@ -32,9 +32,9 @@ class FarmController {
       });
   
       if (farms) {
-        res.status(200).json({
+        res.status(200).json(
           farms,
-        });
+        );
       }
     } catch (err) {
       next(err);
@@ -137,8 +137,8 @@ class FarmController {
         });
 
         fs.unlink(additionalUploadPath, (unlinkError) => {
-          // if (unlinkError)
-          //   console.error(`Unable to delete file: ${additionalUploadPath}`);
+          if (unlinkError)
+            console.error(`Unable to delete file: ${additionalUploadPath}`);
         });
       }
 
@@ -215,8 +215,8 @@ class FarmController {
           statusCode: 200,
           message: `${foundOne.name} successfully deleted`,
         });
-        // } else {
-        //   throw { name: "InvalidFarmId" };
+        } else {
+          throw { name: "InvalidFarmId" };
       }
     } catch (err) {
       next(err);

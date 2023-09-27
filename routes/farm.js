@@ -8,6 +8,7 @@ farm
 
   .get('/', FarmController.getAllFarms)
   .get('/:farmId', FarmController.getFarmById)
+  .get('/my-farms/farms', FarmController.getAllMyFarm)
   .use(authFarmer)
   .delete(
     '/my-farms/:farmId',

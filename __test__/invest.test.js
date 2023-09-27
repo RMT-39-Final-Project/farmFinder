@@ -174,14 +174,16 @@ describe("POST /invests", () => {
 
   it('responds with status 400 when invest is failed', async () => {
     const response = await request(app)
-      .post('/invests/1')
-      .send({
-        status: "failed",
-        ownership: 1,
-        farmId: 1,
-        investorId: 1,
-      })
-      .set('access_token', access_token_investor);
+    .post('/invests/1')
+    .send({
+      status: "success",
+      ownership: 1,
+      totalPrice: 10000002,
+      farmId: 1,
+      investorId: 1,
+    })
+    .set('access_token', access_token_investor);
+      console.log(response.body);
     expect(response.status).toBe(400);
     expect(response.body).toBeInstanceOf(Object);
     expect(response.body).toHaveProperty("status");

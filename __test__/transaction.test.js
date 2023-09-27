@@ -95,7 +95,7 @@ describe("Transaction Test", () => {
         it("should response with status 400 when not enough send balance investor", async () => {
             const response = await request(app)
             .patch("/transactions/decrements/1")
-            .send({balance: "826388100002"})
+            .send({balance: 100000000})
             .set("access_token", access_token_investor)
             
             expect(response.status).toBe(400)

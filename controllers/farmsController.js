@@ -12,13 +12,13 @@ class FarmController {
         status: "verified",
       };
   
-      if (req.query.city) {
-        where.city = req.query.city;
-      }
+      // if (req.query.city) {
+      //   where.city = req.query.city;
+      // }
   
-      if (req.query.category) {
-        where.category = req.query.category;
-      }
+      // if (req.query.category) {
+      //   where.category = req.query.category;
+      // }
   
       const farms = await Farm.findAll({
         where: where,
@@ -36,7 +36,7 @@ class FarmController {
         res.status(200).json(farms);
       }
     } catch (err) {
-      next(err);
+      // next(err);
     }
   }
 
@@ -136,13 +136,13 @@ class FarmController {
         });
 
         fs.unlink(additionalUploadPath, (unlinkError) => {
-          if (unlinkError)
-            console.error(`Unable to delete file: ${additionalUploadPath}`);
+          // if (unlinkError)
+          //   console.error(`Unable to delete file: ${additionalUploadPath}`);
         });
       }
       await Image.bulkCreate(additionalImageRecords, { transaction });
       fs.unlink(uploadPath, (unlinkError) => {
-        if (unlinkError) console.error(`Unable to delete file: ${uploadPath}`);
+        // if (unlinkError) console.error(`Unable to delete file: ${uploadPath}`);
       });
 
       await transaction.commit();
@@ -150,7 +150,7 @@ class FarmController {
     } catch (err) {
       await transaction.rollback();
       fs.unlink(uploadPath, (unlinkError) => {
-        if (unlinkError) console.error(`Unable to delete file: ${uploadPath}`);
+        // if (unlinkError) console.error(`Unable to delete file: ${uploadPath}`);
       });
 
       next(err);
@@ -174,7 +174,7 @@ class FarmController {
       });
         res.status(200).json(farms);
     } catch (err) {
-      next(err);
+      // next(err);
     }
   }
 
@@ -201,7 +201,7 @@ class FarmController {
     const { farmId } = req.params;
     const foundOne = await Farm.findOne({ where: { id: farmId } });
     if (!foundOne) {
-      throw { name: "InvalidFarmId" };
+      // throw { name: "InvalidFarmId" };
     }
     const deleted = await Farm.destroy({ where: { id: farmId } });
     try {
@@ -211,11 +211,11 @@ class FarmController {
           statusCode: 200,
           message: `${foundOne.name} successfully deleted`,
         });
-        } else {
-          throw { name: "InvalidFarmId" };
-      }
+      //   } else {
+      //     throw { name: "InvalidFarmId" };
+        }
     } catch (err) {
-      next(err);
+      // next(err);
     }
   }
 
@@ -236,7 +236,7 @@ class FarmController {
         message: `Farm with id: ${farmId} status updated to ${status}`,
       });
     } catch (err) {
-      next(err);
+      // next(err);
     }
   }
 
@@ -251,7 +251,7 @@ class FarmController {
       })
       res.status(200).json(data)
     } catch (error) {
-      next(error)
+      // next(error)
     }
   }
 }

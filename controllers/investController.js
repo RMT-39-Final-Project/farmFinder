@@ -81,7 +81,7 @@ class InvestController {
       const { farmId } = req.params;
 
       const sql = `
-      SELECT "Invests"."investorId", "Investors".username, "Investors".email, SUM(ownership) AS "totalOwnership" FROM "Invests"
+      SELECT "Invests"."investorId", "Investors".username, "Investors".email, "Investors"."phoneNumber", SUM(ownership) AS "totalOwnership" FROM "Invests"
         JOIN "Investors"  ON "Investors".id = "Invests"."investorId"
         WHERE "farmId" = ${farmId} AND "status" = 'success'
         GROUP BY "Invests"."investorId", "Investors".id

@@ -242,7 +242,7 @@ class FarmController {
   static async getAllMyFarm(req, res, next) {
     try {
       const data = await Farm.findAll({
-        where: { status: "verified" },
+        where: { status: "verified", FarmerId: req.farmer.id },
         include: {
           model: Image,
           attributes: { exclude: ["createdAt", "updatedAt"] },
